@@ -12,7 +12,6 @@ MRN **não é um sistema lógico pronto**, mas sim uma ferramenta de desenvolvim
 
 - 🧱 **Abordagem modular**: você constrói blocos lógicos com builders, presets e padrões como Strategy e Bridge.
 - 🌐 **Lógica multivalorada e flexível**: suporte nativo à lógica paraconsistente e arquitetura aberta para outras lógicas.
-- 🧠 **Voltado ao raciocínio simbólico**, não à síntese de hardware.
 - 🛠️ **Framework leve**, direto ao ponto, sem dependência de compiladores C++ ou bibliotecas externas pesadas.
 
 ---
@@ -87,5 +86,6 @@ Este projeto é licenciado sob a [MIT License](LICENSE).
 ## 💬 Contribua
 
 Contribuições, ideias e sugestões são bem-vindas! Abra uma issue ou envie um pull request.
+
 
 
