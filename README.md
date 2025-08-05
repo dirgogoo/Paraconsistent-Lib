@@ -38,7 +38,7 @@ mrn/
 
 ## 🏫 Sobre o Projeto
 
-Este projeto é desenvolvido no âmbito do [EIALab - Laboratório de Inteligência Artificial Embarcada]([https://eailab.labmax.org/]) do **Instituto Federal de São Paulo (IFSP)**..
+Este projeto é desenvolvido no âmbito do [EIALab - Laboratório de Inteligência Artificial Embarcada](https://eailab.labmax.org/) do **Instituto Federal de São Paulo (IFSP)**..
 
 ---
 
