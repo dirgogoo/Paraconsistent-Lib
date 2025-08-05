@@ -8,7 +8,7 @@ Projetado com foco em **modularidade, liberdade de modelagem e clareza arquitetu
 
 ## ✨ Diferenciais
 
-MRN **não é um sistema lógico pronto**, mas sim uma ferramenta de desenvolvimento para **construção de redes lógicas** personalizadas. Ele se diferencia de frameworks como `aigverse` ou `OpenCog` por:
+MRN **não é um sistema lógico pronto**, mas sim uma ferramenta de desenvolvimento para **construção de redes lógicas** personalizadas:
 
 - 🧱 **Abordagem modular**: você constrói blocos lógicos com builders, presets e padrões como Strategy e Bridge.
 - 🌐 **Lógica multivalorada e flexível**: suporte nativo à lógica paraconsistente e arquitetura aberta para outras lógicas.
@@ -99,3 +99,4 @@ Este projeto é licenciado sob a [MIT License](LICENSE).
 ## 💬 Contribua
 
 Contribuições, ideias e sugestões são bem-vindas! Abra uma issue ou envie um pull request.
+
