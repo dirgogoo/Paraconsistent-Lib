@@ -64,13 +64,12 @@ Veja a pasta `examples/` para entender como construir uma rede lógica do zero, 
 - Builders para criar nós lógicos  
 - Estratégias de propagação  
 - Operações customizadas  
-- Lógica paraconsistente com cálculos automáticos  
 
 ---
 
 ## 🧠 Idealizado para
 
-- Desenvolvedores que desejam criar seus próprios raciocinadores  
+- Desenvolvedores que desejam criar suas aplicações  
 - Pesquisadores em lógicas não clássicas  
 - Estudantes que querem aprender lógica aplicada de forma prática  
 - Projetos educacionais, experimentais ou de IA simbólica  
@@ -86,6 +85,7 @@ Este projeto é licenciado sob a [MIT License](LICENSE).
 ## 💬 Contribua
 
 Contribuições, ideias e sugestões são bem-vindas! Abra uma issue ou envie um pull request.
+
 
 
 
