@@ -14,7 +14,6 @@ MRN **não é um sistema lógico pronto**, mas sim uma ferramenta de desenvolvim
 - 🌐 **Lógica multivalorada e flexível**: suporte nativo à lógica paraconsistente e arquitetura aberta para outras lógicas.
 - 🧠 **Voltado ao raciocínio simbólico**, não à síntese de hardware.
 - 🛠️ **Framework leve**, direto ao ponto, sem dependência de compiladores C++ ou bibliotecas externas pesadas.
-- 🎓 Ideal para **pesquisadores, educadores, entusiastas de IA simbólica e lógica computacional**.
 
 ---
 
@@ -35,6 +34,11 @@ mrn/
 ├── README.md               # Esta documentação
 └── LICENSE
 ```
+---
+
+## 🏫 Sobre o Projeto
+
+Este projeto é desenvolvido no âmbito do [EIALab - Laboratório de Inteligência Artificial Embarcada]([https://eailab.labmax.org/]) do **Instituto Federal de São Paulo (IFSP)**..
 
 ---
 
@@ -65,22 +69,6 @@ Veja a pasta `examples/` para entender como construir uma rede lógica do zero, 
 
 ---
 
-## 📚 Inspirações e Comparações
-
-Embora existam frameworks de lógica como:
-
-- [`aigverse`](https://github.com/marcelwa/aigverse) — síntese lógica em IA  
-- [`LogicNG`](https://logicng.org/)  
-- [`OpenCog`](https://opencog.org/)  
-
-O **MRN** é único por ser:
-
-- ✅ Simples e modular  
-- ✅ Multilógico desde a base  
-- ✅ Voltado ao desenvolvimento de soluções, não à entrega de uma só  
-
----
-
 ## 🧠 Idealizado para
 
 - Desenvolvedores que desejam criar seus próprios raciocinadores  
@@ -99,4 +87,5 @@ Este projeto é licenciado sob a [MIT License](LICENSE).
 ## 💬 Contribua
 
 Contribuições, ideias e sugestões são bem-vindas! Abra uma issue ou envie um pull request.
+
 
