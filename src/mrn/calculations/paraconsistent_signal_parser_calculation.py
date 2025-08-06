@@ -1,4 +1,4 @@
-from mrn.core.ilogic_calculation import ICalculation
+from mrn.core.icalculation import ICalculation
 from mrn.signals.simple_paraconsistent_signal import SimpleParaconsistentSignal
 from mrn.signals.complete_paraconsistent_signal import CompleteParaconsistentSignal
 

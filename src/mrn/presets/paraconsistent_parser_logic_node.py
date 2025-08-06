@@ -1,8 +1,8 @@
 from mrn.nodes.logic_node import LogicNode
-from mrn.operations.paraconsistent_parser_operation import ParaconsistentParserOperation
+from mrn.operations.calculate_each_signal_operation import CalculateEachSignalOperation
 from mrn.calculations.paraconsistent_signal_parser_calculation import ParaconsistentSignalParser
 
 def ParaconsistentParserLogicNode(node_id: str = "parser") -> LogicNode:
     calculator = ParaconsistentSignalParser()
-    operation = ParaconsistentParserOperation(calculator)
+    operation = CalculateEachSignalOperation(calculator)
     return LogicNode(node_id=node_id, operation=operation)
