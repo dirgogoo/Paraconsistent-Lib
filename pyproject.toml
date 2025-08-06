@@ -18,7 +18,6 @@ packages = [{include = "mrn", from = "src"}]
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
 mkdocs = "^1.6.1"
 
 [build-system]
