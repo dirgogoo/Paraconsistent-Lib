@@ -1,6 +1,6 @@
 class BaseNodeBuilder:
     def __init__(self):
-        self._node_id = "default"
+        self._node_id = ""
 
     def set_id(self, node_id: str) -> "BaseNodeBuilder":
         self._node_id = node_id

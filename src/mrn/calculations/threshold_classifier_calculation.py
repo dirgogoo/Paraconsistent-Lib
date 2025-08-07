@@ -1,14 +1,17 @@
-from typing import List
+from mrn.core.icalculation import ICalculation
 from mrn.signals.complete_paraconsistent_signal import CompleteParaconsistentSignal
-from mrn.core.iclassifier_calculation import IClassifierCalculation
+from mrn.signals.classified_paraconsistent_signal import ClassifiedParaconsistentSignal
 
-class ThresholdClassifierCalculation(IClassifierCalculation):
+class ThresholdClassifierCalculation(ICalculation):
     def __init__(self, threshold: float = 0.3):
         self.threshold = threshold
+        self._last_result = None
 
-    def classify(self, inputs: List[CompleteParaconsistentSignal]) -> str:
-        if not inputs:
-            return "⊥"
+    def process(self, signal: CompleteParaconsistentSignal) -> "ThresholdClassifierCalculation":
+        label = "V" if signal.gc > self.threshold else "F"
+        confidence = abs(signal.gc)
+        self._last_result = ClassifiedParaconsistentSignal(label, confidence, signal.source_id)
+        return self
 
-        avg_gc = sum(s.gc for s in inputs) / len(inputs)
-        return "V" if avg_gc > self.threshold else "F"
+    def result(self) -> ClassifiedParaconsistentSignal:
+        return self._last_result

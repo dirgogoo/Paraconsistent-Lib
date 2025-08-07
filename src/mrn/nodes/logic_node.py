@@ -5,13 +5,16 @@ from mrn.core.ioperation import IOperation
 
 class LogicNode(INetworkNode):
     def __init__(self, node_id: str, operation: IOperation):
-        self._id = node_id
+        self.node_id  = node_id
         self._operation = operation
         self._inputs: List[ISignal] = []
         self._outputs: List[ISignal] = []
 
     def get_id(self) -> str:
-        return self._id
+        return self.node_id 
+    
+    def set_id(self, id :str):
+        self.node_id = id
 
     def receive(self, signal: ISignal) -> None:
         self._inputs.append(signal)

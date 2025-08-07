@@ -5,6 +5,9 @@ class INetworkNode:
     def get_id(self) -> str:
         ...
 
+    def set_id(self, id :str):
+        ...
+
     def receive(self, signal: ISignal) -> None:
         ...
 
