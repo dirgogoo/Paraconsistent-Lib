@@ -8,7 +8,10 @@ class InputNode(INetworkNode):
         self._signals: List[ISignal] = []
 
     def get_id(self) -> str:
-        return self.node_id
+        return self.node_id 
+
+    def set_id(self, id :str):
+        self.node_id = id
 
     def receive(self, signal: ISignal) -> None:
         self._signals.append(signal)

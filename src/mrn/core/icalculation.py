@@ -1,11 +1,18 @@
+# mrn/core/icalculation.py
 from abc import ABC, abstractmethod
 from .isignal import ISignal
 
 class ICalculation(ABC):
     @abstractmethod
-    def process(self, signal: ISignal) -> ISignal:
+    def process(self, signal: ISignal) -> "ICalculation":
         """
-        Realiza o processamento lógico-matemático sobre um sinal.
-        Pode retornar um novo sinal com dados enriquecidos.
+        Processa o sinal e armazena internamente. Use result() para obter a saída.
         """
         pass
+
+    def result(self) -> ISignal | None:
+        """
+        Retorna o resultado acumulado ou calculado com base nos sinais processados.
+        """
+        return None
+
