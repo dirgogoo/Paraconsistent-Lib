@@ -85,22 +85,46 @@ class ParaconsistentBlock(BlockWithSchema):
         raise ValueError(f"Porta desconhecida: {name}")
 
     # ponte Expr(float) -> SimpleParaconsistentSignal (preservando o outro campo)
-    def build_bridge_operation(self, *, to_attr: str, func: Callable[[ISignal], float]):
+    def build_bridge_operation(self, *, to_attr: str, func: Callable):
+        """
+        Retorna um callable(List[ISignal]) -> List[ISignal] que:
+        - se 'func' aceitar lista de sinais (multi-entrada), produz UM sinal de saída
+        - se 'func' aceitar 1 sinal (single-entrada), mapeia cada input para um output
+        """
         def op(signals: List[ISignal]) -> List[ISignal]:
-            outs: List[ISignal] = []
-            for s in signals:
-                val = float(func(s))
-                cur_mu  = float(getattr(s, "mu", 0.0))
-                cur_lam = float(getattr(s, "lam", getattr(s, "lambda", 0.0)))
-                src     = getattr(s, "source_id", getattr(s, "source", ""))
+            if not signals:
+                return []
 
+            # TENTATIVA 1: tratar como função multi-entrada (Expr com N origens)
+            try:
+                val_multi = func(signals)  # espera func(inputs: List[ISignal]) -> float
+                val_multi = float(val_multi)
+
+                # decide mu/lam do output único
+                src = getattr(signals[0], "source_id", getattr(signals[0], "source", ""))
                 if to_attr == "mu":
-                    new_mu, new_lam = val, cur_lam
-                else:  # to_attr == "lam"
-                    new_mu, new_lam = cur_mu, val
+                    out = SimpleParaconsistentSignal(mu=val_multi, lam=0.0, source_id=src)
+                else:
+                    out = SimpleParaconsistentSignal(mu=0.0, lam=val_multi, source_id=src)
+                return [out]
 
-                outs.append(SimpleParaconsistentSignal(mu=new_mu, lam=new_lam, source_id=src))
-            return outs
+            except TypeError:
+                # TENTATIVA 2: tratar como função single-entrada (retrocompatibilidade)
+                outs: List[ISignal] = []
+                for s in signals:
+                    val = float(func(s))  # espera func(signal: ISignal) -> float
+                    cur_mu  = float(getattr(s, "mu", 0.0))
+                    cur_lam = float(getattr(s, "lam", getattr(s, "lambda", 0.0)))
+                    src     = getattr(s, "source_id", getattr(s, "source", ""))
+
+                    if to_attr == "mu":
+                        new_mu, new_lam = val, cur_lam
+                    else:
+                        new_mu, new_lam = cur_mu, val
+
+                    outs.append(SimpleParaconsistentSignal(mu=new_mu, lam=new_lam, source_id=src))
+                return outs
+
         return op
 
     # conveniência

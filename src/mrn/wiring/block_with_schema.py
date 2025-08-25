@@ -1,3 +1,4 @@
+# mrn/wiring/block_with_schema.py
 from __future__ import annotations
 from typing import Callable, Dict, List
 from mrn.core.network_manager import Network_Manager
@@ -34,8 +35,13 @@ class BlockWithSchema:
     def port(self, name: str) -> INetworkNode:
         raise NotImplementedError
 
-    def build_bridge_operation(self, *, to_attr: str, func):
-        """Retorna callable(List[ISignal])->List[ISignal] que constrói a ENTRADA do bloco destino."""
+    def build_bridge_operation(self, *, to_attr: str, func: Callable[[List[ISignal]], float]):
+        """
+        Deve retornar um IOperation que:
+          - recebe TODOS os ISignal de entrada (em uma lista, na ordem das origens da expressão);
+          - calcula um float via 'func(inputs)';
+          - constrói um sinal de ENTRADA do bloco destino, escrevendo em 'to_attr' (ex.: 'mu' ou 'lam').
+        """
         raise NotImplementedError
 
     # Conectores “bonitos” – import tardio para evitar ciclo
