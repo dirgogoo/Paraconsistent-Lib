@@ -2,6 +2,7 @@ from typing import Dict, List
 from collections import deque
 from mrn.core.inetwork_node import INetworkNode
 from mrn.core.isignal import ISignal
+import warnings
 
 class Network_Manager:
     def __init__(self):
@@ -16,18 +17,38 @@ class Network_Manager:
         self._id_counter[cls_name] = count
         return f"{cls_name}_{count}"
 
-    def add_node(self, node: INetworkNode) -> None:
-        node_id = node.get_id()
-        
-        if not node_id or node_id.strip() == "":
-            node_id = self._generate_id(node)
-            node.set_id(node_id)
-        elif node_id in self._nodes:
-            raise ValueError(f"ID duplicado detectado: '{node_id}'.")
 
-        self._nodes[node_id] = node
-        self._edges.setdefault(node_id, [])
-        self._reverse_edges.setdefault(node_id, [])
+
+    def add_node(self, *nodes: INetworkNode) -> None:
+        for node in nodes:
+            raw_id = node.get_id()
+            node_id = (raw_id or "").strip()
+
+            # 1) Sem ID -> gerar e garantir unicidade
+            if not node_id:
+                node_id = self._generate_id(node)
+                while node_id in self._nodes:
+                    node_id = self._generate_id(node)
+                node.set_id(node_id)
+
+            # 2) Colisão -> avisar e gerar novo ID automaticamente (sem levantar exceção)
+            elif node_id in self._nodes:
+                old_id = node_id
+                node_id = self._generate_id(node)
+                while node_id in self._nodes:
+                    node_id = self._generate_id(node)
+                node.set_id(node_id)
+                warnings.warn(
+                    f"ID duplicado detectado: '{old_id}'. "
+                    f"Gerado novo id automaticamente: '{node_id}'.",
+                    category=UserWarning,
+                    stacklevel=2
+                )
+
+            # 3) Registrar nos índices
+            self._nodes[node_id] = node
+            self._edges.setdefault(node_id, [])
+            self._reverse_edges.setdefault(node_id, [])
 
     def connect(self, from_node: INetworkNode, to_node: INetworkNode) -> None:
         from_id = from_node.get_id()
