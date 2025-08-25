@@ -5,7 +5,7 @@ from mrn.core.ioperation import IOperation
 
 class OutputNode(INetworkNode):
     def __init__(self, node_id: str, operation: IOperation):
-        self.node_id  = ""
+        self.node_id  = node_id
         self.operation = operation
         self._inputs: List[ISignal] = []
         self._outputs: List[ISignal] = []
