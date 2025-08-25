@@ -3,6 +3,6 @@ from mrn.operations.result_each_signal_operation import ResultEachSignalOperatio
 from mrn.calculations.simple_to_complete_paraconsistent_calculation import SimpleToCompleteParaconsistentCalculation
 
 def ParaconsistentParserLogicNode() -> LogicNode:
-    calculator = SimpleToCompleteParaconsistentCalculation()
+    calculator = SimpleToCompleteParaconsistentCalculation(nd=6, clamp=True)
     operation = ResultEachSignalOperation(calculator)
     return LogicNode(None, operation=operation)

@@ -20,9 +20,7 @@ def exemplo1():
 
     # Criar e configurar a rede
     network = Network_Manager()
-    network.add_node(input_node)
-    network.add_node(parser_node)
-    network.add_node(classifier_node)
+    network.add_node(input_node,parser_node,classifier_node)
 
     network.connect(input_node, parser_node)
     network.connect(parser_node, classifier_node)
@@ -41,7 +39,7 @@ def exemplo1():
     for s in outputs:
         print(s.to_dict())
 
-    #RESULTADO: {'type': 'paraconsistent', 'mu': 0.7, 'lambda': 0.2, 'source': 'aggregated', 'certainty': 0.49999999999999994}
+    #RESULTADO: {'type': 'paraconsistent_output', 'label': 'V', 'confidence': 0.8, 'source': ''}
 
 def exemplo2():
      # Criar os nós
@@ -63,10 +61,7 @@ def exemplo2():
     output_node = OutputNodeBuilder().set_operation(NoneOperation()).build()
 
     network = Network_Manager()
-    network.add_node(input_node)
-    network.add_node(input_node2)
-    network.add_node(aggregator_node)
-    network.add_node(output_node)
+    network.add_node(input_node, input_node2, aggregator_node, output_node)
 
     network.connect(input_node,aggregator_node)
     network.connect(input_node2,aggregator_node)
