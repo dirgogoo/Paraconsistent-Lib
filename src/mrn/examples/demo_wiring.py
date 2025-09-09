@@ -1,34 +1,32 @@
-from mrn.core.network_manager import Network_Manager
-from mrn.blocks.paraconsistent_block import ParaconsistentBlock
+# mrn/examples/demo.py
+from mrn.core.graph import BlockGraph
+from mrn.paraconsistent.block import ParaconsistentBlock
 
 def main():
+    g = BlockGraph()
+    b1 = ParaconsistentBlock("B1")
 
-    net = Network_Manager()
-    b1 = ParaconsistentBlock(block_id="B1", network=net, initial_mu=0.9, initial_lam=0.1
-                            ,tC=0.35, tCT=0.40, tD=0.25, L=0.07) # bloco 1 - esses são os limiares do classificador (padrão: 0.30, 0.30, 0.20, 0.05)
-    b2 = ParaconsistentBlock(block_id="B2", network=net)
+    g.add_block(b1)
 
-    # Conectando blocos
-    # DSL: b1.complete.mu >> b2.input.lam
-    b1.complete.mu >> b2.input.lam
-    # Fórmula inline: (gc - 0.2) >> mu
-    (b1.complete.gc - 0.2)*0.2/0.2 >> b2.input.mu
+    # entradas no início da rede
+    b1.input.mu = 0.5  # ou: b1.input.mu = 0.6 ; b1.input.lam = 0.2
+    b1.input.lam = 0.5
 
-    net.propagate_all() # processa tudo e propaga os sinais
+    b1.config.FtC = 0.5
+    b1.config.VSSC = 0.5
+    b1.config.VICC = -0.5
+    b1.config.VSSCT = 0.5
+    b1.config.VICCT = -0.5
+    b1.config.VlV = 0.5
+    b1.config.VlF = 0.5
 
-    print("B1 complete:", b1.get_complete())
-    print("B1 classified:", b1.get_classified())
 
-    # Outputs printados:
-    #B1 complete: [{'type': 'paraconsistent_complete', 'mu': 0.9, 'lambda': 0.1, 'gc': 0.8, 'gct': 0.0, 'gcr': 0.8, 'mer': 0.9, 'phie': 1.0, 'certainty': 0.8}]
-    #B1 classified: [{'type': 'paraconsistent_output', 'label': 'V', 'confidence': 0.45}]
+    g.run()
+    print(b1.read_port("complete").__dict__)
+    print(b1.read_port("classified").__dict__)
 
-    print("B2 complete:", b2.get_complete())
-    print("B2 classified:", b2.get_classified())
 
-    # Outputs printados:
-    #B2 complete: [{'type': 'paraconsistent_complete', 'mu': 0.6, 'lambda': 0.1, 'gc': 0.5, 'gct': -0.3, 'gcr': 0.416905, 'mer': 0.708452, 'phie': 0.7, 'certainty': 0.5}]
-    #B2 classified: [{'type': 'paraconsistent_output', 'label': 'C', 'confidence': 0.0}]
+
 
 if __name__ == "__main__":
     main()

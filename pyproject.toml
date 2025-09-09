@@ -23,3 +23,7 @@ mkdocs = "^1.6.1"
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+demo = "mrn.examples.demo_wiring:main"
+test = "mrn.test.run_table_check:main"
