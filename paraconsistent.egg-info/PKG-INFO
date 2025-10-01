@@ -1,3 +1,22 @@
+Metadata-Version: 2.4
+Name: paraconsistent
+Version: 0.1.0
+Summary: Blocos de lógica paraconsistente com engine stateless e API simples (sem grafo/DSL).
+Author-email: Diego <diegocruz200711@gmail.com>
+Project-URL: Repository, https://github.com/dirgogoo/Paraconsistent-Lib
+Keywords: logic,paraconsistent,LPA2v,reasoning,fuzzy
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
 1. Introdução
 
 Paraconsistent Lib é uma biblioteca Python para construir redes de raciocínio lógico modulares. Ela te ajuda a modelar, testar e orquestrar blocos lógicos (começando pela lógica paraconsistente) sem dor de cabeça com infraestrutura, sem grafo e sem DSL, e sem cálculos de baixo nível. Você trabalha com blocos e expressões Python diretas para conectar entradas e saídas; o Paraconsistent Lib cuida do resto (cálculos, propagação local, cache e inspeção dos resultados), permitindo composições modulares e reprodutíveis. Foi criada para substituir processos manuais e suscetíveis a erro por fluxos claros e verificáveis, úteis para pesquisadores e entusiastas da lógica paraconsistente.
