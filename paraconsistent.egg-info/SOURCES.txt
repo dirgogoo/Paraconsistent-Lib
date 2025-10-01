@@ -1,0 +1,8 @@
+MANIFEST.in
+README.md
+pyproject.toml
+paraconsistent.egg-info/PKG-INFO
+paraconsistent.egg-info/SOURCES.txt
+paraconsistent.egg-info/dependency_links.txt
+paraconsistent.egg-info/top_level.txt
+src/mrn/py.typed
