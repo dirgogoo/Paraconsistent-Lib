@@ -44,11 +44,11 @@ class ParaconsistentEngine:
         Returns:
             Tupla (d, D, gcr) onde:
             - d: Distância radial
-            - D: Distância normalizada
+            - D: Distância normalizada (clampada em 1.0)
             - gcr: Grau de Certeza Radial (Real Certainty Degree)
         """
         d = radial_d_to_nearest_apex(mu, lam)
-        D = d
+        D = min(d, 1.0)  # Clampar D em 1.0 para alinhar com planilha de referência
         gcr = (1.0 - D) * (1.0 if gc >= 0 else -1.0)
         return d, D, gcr
 

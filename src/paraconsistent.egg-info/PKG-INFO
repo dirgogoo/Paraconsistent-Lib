@@ -48,8 +48,7 @@ from paraconsistent.blocks import ParaconsistentBlock
 # 1) Criar o bloco
 b = ParaconsistentBlock()
 # 2) Ajustar parâmetros
-b.config.FtC = 0.70
-b.config.FD  = 0.20
+b.config.FtC = 0.70  # Certainty Control Limit (CCL)
 
 
 3.3 Executando um Bloco
@@ -64,8 +63,7 @@ from paraconsistent.blocks import ParaconsistentBlock
 # 1) Criar o bloco
 b = ParaconsistentBlock()
 # 2) Ajustar parâmetros
-b.config.FtC = 0.70
-b.config.FD  = 0.20
+b.config.FtC = 0.70  # Certainty Control Limit (CCL)
 # 3) Definir entradas
 b.input.mu  = 0.20
 b.input.lam = 0.40
@@ -79,8 +77,7 @@ from paraconsistent.blocks import ParaconsistentBlock
 b = ParaconsistentBlock()
 
 # 2) Ajustar parâmetros
-b.config.FtC = 0.70
-b.config.FD  = 0.20
+b.config.FtC = 0.70  # Certainty Control Limit (CCL)
 
 # 3) Definir entradas
 b.input.mu  = 0.20
@@ -100,8 +97,7 @@ b1 = ParaconsistentBlock()
 b2 = ParaconsistentBlock()
 
 # Aqui escolho configurar apenas o bloco b1; no b2 uso as configs padrão
-b1.config.FtC = 0.70
-b1.config.FD  = 0.20
+b1.config.FtC = 0.70  # Certainty Control Limit (CCL)
 
 b1.input.lam = 0.1
 b1.input.mu  = 0.2
@@ -115,8 +111,7 @@ b1 = ParaconsistentBlock()
 b2 = ParaconsistentBlock()
 
 # Aqui escolho configurar apenas o bloco b1; no b2 uso as configs padrão
-b1.config.FtC = 0.70
-b1.config.FD  = 0.20
+b1.config.FtC = 0.70  # Certainty Control Limit (CCL)
 
 b1.input.lam = 0.1
 b1.input.mu  = 0.2
@@ -150,12 +145,14 @@ Toda alteração invalida o cache e força recomputar na próxima leitura de b.c
 
 5.3 Parâmetros
 
-b.config.FL  = 0.75                 # ajuste/normalização
-b.config.FtC = 0.50; b.config.FD = 0.20
-b.config.VSSC = 0.50; b.config.VICCT = -0.50
+b.config.FtC = 0.70  # Certainty Control Limit (CCL)
+b.config.VlV = 0.50  # Viés pró-verdadeiro
+b.config.VlF = 0.50  # Viés pró-falso
 
 # ou, em lote
-b.set_params(FL=0.75, FtC=0.5, FD=0.2)
+b.set_params(FtC=0.7, VlV=0.5, VlF=0.5)
+
+# Nota: VSSC, VICC, VSSCT, VICCT são calculados automaticamente baseados em FtC
 
 
 Campos e faixas em §6. Valores fora da faixa são truncados com aviso.
@@ -169,16 +166,16 @@ Campos e faixas em §6. Valores fora da faixa são truncados com aviso.
 6. Parâmetros (config)
 
 Parâmetro | Faixa esperada | Padrão | Descrição resumida
-FL        | > 0            | 1.0    | Fator de ajuste/normalização das entradas.
-FtC       | [0,1]          | 0.50   | Limiar base no eixo de certeza (GC).
-FD        | [0,1]          | 0.00   | Limiar base no eixo de contradição (GCT).
-VSSC      | [-1,1]         | 0.50   | Assimetria (+) no eixo de certeza (suporte).
-VICC      | [-1,1]         | -0.50  | Assimetria (−) no eixo de certeza (suporte).
-VSSCT     | [-1,1]         | 0.50   | Assimetria (+) no eixo de contradição.
-VICCT     | [-1,1]         | -0.50  | Assimetria (−) no eixo de contradição.
-VlV       | [0,1]          | 0.50   | Viés pró-V (puxa GC para +).
-VlF       | [0,1]          | 0.50   | Viés pró-F (puxa GC para −).
+FtC       | [0,1]          | 0.50   | Certainty Control Limit (CCL) - controla limites de certeza e contradição.
+VlV       | [0,1]          | 0.50   | Viés pró-Verdadeiro (puxa GC para +).
+VlF       | [0,1]          | 0.50   | Viés pró-Falso (puxa GC para −).
 L         | [0,1]          | 0.05   | Piso mínimo usado em algumas estratégias (reserva futura).
+
+**Nota importante:** VSSC, VICC, VSSCT e VICCT são calculados automaticamente pelo engine baseados em FtC, seguindo a lógica do MATLAB:
+- VSSC = FtC
+- VICC = -FtC
+- VSSCT = 1 - FtC
+- VICCT = FtC - 1
 
 Validação: se um valor sair da faixa, ele é clampado e um RuntimeWarning é emitido.
 
@@ -188,18 +185,18 @@ Retornados por b.complete (como atributos) e por b.to_dict() (como chaves do dic
 
 Campo | Descrição
 mu, lam | Entradas (clampadas em [0,1]).
-mu_p, lam_p | Entradas ajustadas pelo fator FL.
-gc | Grau de Certeza (μ − λ). Intervalo ~ [-1,1].
-gct | Grau de Contradição (μ + λ − 1). Intervalo ~ [-1,1].
-gct_adj | Versão ajustada de gct (considera assimetrias/FL).
+gc | Grau de Certeza (μ − λ). Intervalo ~ [-1,1]. Equivalente a DC no MATLAB.
+gct | Grau de Contradição (μ + λ − 1). Intervalo ~ [-1,1]. Equivalente a DCT no MATLAB.
 d, D | Métrica geométrica de distância a vértices (ver metrics.radial_d_to_nearest_apex).
-gcr | Certeza “radial”: (1 − D) * sign(gc).
-phi, phiE | Intervalo de certeza relativo a gct: 1 − |gct|.
-muE | Evidência baseada em gc.
-muECT | Evidência baseada em gct.
-muER | Evidência baseada em gcr.
-muE_p | Evidência baseada nas entradas ajustadas (mu_p, lam_p).
-Parâmetros (FL, FtC, FD, VSSC, VICC, VSSCT, VICCT, VlV, VlF, L) | Eco dos valores em uso no momento do cálculo para reprodutibilidade.
+gcr | Grau de Certeza Radial: (1 − D) * sign(gc). Equivalente a DCR no MATLAB.
+phi, phiE | Intervalo de certeza: 1 − |gct|. Equivalente a Phi no MATLAB.
+muE | Resulting Evidence Degree: (gc + 1) / 2. Equivalente a MIE no MATLAB.
+muECT | Resulting Contradiction Degree: (gct + 1) / 2. Equivalente a MIEct no MATLAB.
+muER | **Resulting Real Evidence Degree: (gcr + 1) / 2. Equivalente a MIER no MATLAB.**
+decision_output | **Saída de decisão:** 1.0 se muER > FtC, 0.0 se muER < FtC, 0.5 se muER == FtC.
+label | Rótulo da região lógica (V, F, ┬, ┴, Q┬→V, QF→┴, etc).
+Regions | Dicionário de flags booleanas por região para uso em sistemas especialistas.
+Parâmetros (FtC, VlV, VlF, L) | Eco dos valores em uso no momento do cálculo para reprodutibilidade.
 
 8. Exemplos práticos
 
