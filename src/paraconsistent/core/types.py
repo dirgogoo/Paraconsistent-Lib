@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TypedDict
+from typing import Dict, TypedDict
 
 
 __all__ = ["Complete"]
@@ -17,3 +17,5 @@ class Complete(TypedDict):
     d: float; D: float; gcr: float
     # evidências
     muE: float; muE_p: float; muECT: float; muER: float; phi: float; phiE: float
+    label: str
+    regions: dict[str, bool]
