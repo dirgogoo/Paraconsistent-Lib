@@ -8,13 +8,16 @@ __all__ = ["BlockParams", "DEFAULT_PARAMS", "validate_and_merge"]
 
 @dataclass(frozen=True)
 class BlockParams:
-    FL: float   = 1.0
-    FtC: float  = 0.50
-    FD: float   = 0.0
-    VSSC: float  = 0.50
-    VICC: float  = -0.50
-    VSSCT: float = 0.50
-    VICCT: float = -0.50
+    """Parâmetros do bloco paraconsistente.
+
+    Nota: VSSC, VICC, VSSCT, VICCT são calculados automaticamente no engine
+    baseados em FtC, seguindo a lógica do MATLAB:
+    - VSSC = FtC
+    - VICC = -FtC
+    - VSSCT = 1 - FtC
+    - VICCT = FtC - 1
+    """
+    FtC: float  = 0.50  # Certainty Control Limit (CCL)
     VlV: float  = 0.50
     VlF: float  = 0.50
     L: float    = 0.05
@@ -42,9 +45,9 @@ def _pos(name: str, v: float) -> float:
         return 1.0
     return v
 
-_CLAMP01_FIELDS = {"FtC", "FD", "VlV", "VlF", "L"}
-_CLAMP11_FIELDS = {"VSSC", "VICC", "VSSCT", "VICCT"}
-_POSITIVE_FIELDS = {"FL"}
+_CLAMP01_FIELDS = {"FtC", "VlV", "VlF", "L"}
+_CLAMP11_FIELDS = {}  # VSSC, VICC, VSSCT, VICCT são calculados automaticamente no engine
+_POSITIVE_FIELDS = {}
 
 def validate_and_merge(overrides: Optional[Dict[str, Any]] = None) -> BlockParams:
     """Valida e mescla overrides com defaults. Tolerante a None/mappings e
