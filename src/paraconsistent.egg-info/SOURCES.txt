@@ -12,6 +12,7 @@ src/paraconsistent/blocks/block.py
 src/paraconsistent/core/__init__.py
 src/paraconsistent/core/config.py
 src/paraconsistent/core/engine.py
+src/paraconsistent/core/labels.py
 src/paraconsistent/core/metrics.py
 src/paraconsistent/core/types.py
 src/paraconsistent/examples/demo_wiring.py

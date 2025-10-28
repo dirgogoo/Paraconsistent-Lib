@@ -6,6 +6,7 @@ from typing import Dict, Tuple
 from paraconsistent.core.metrics import clamp01, radial_d_to_nearest_apex
 from paraconsistent.core.config import BlockParams
 from paraconsistent.core.types import Complete
+from paraconsistent.core.labels import ThresholdsAsym, classify_12_regions_asymmetric, regions_flags
 
 
 __all__ = ["ParaconsistentEngine"]
@@ -42,16 +43,37 @@ class ParaconsistentEngine:
         gcr = (1.0 - D) * (1.0 if gc >= 0 else -1.0)
         return d, D, gcr
 
+    @staticmethod
+    def classify(ftc: float, fd: float,vssc: float, vssct:float,vicc:float, vicct:float,vlv:float,vlf:float, gc: float, gct: float) -> Tuple[str, dict]:
+        FtC_pos = max(ftc, abs(vssc))   # GC>0
+        FtC_neg = max(ftc, abs(vicc))   # GC<0
+        FD_pos  = max(fd,  abs(vssct))  # GCT>0
+        FD_neg  = max(fd,  abs(vicct))  # GCT<0
+
+        FtC_pos_eff = max(FtC_pos - vlv, ftc)  # nunca abaixo de FtC
+        FtC_neg_eff = max(FtC_neg - vlf, ftc)
+        label = classify_12_regions_asymmetric(
+            gc, gct,
+            ThresholdsAsym(
+                ftc_pos=FtC_pos_eff,
+                ftc_neg=FtC_neg_eff,
+                fd_pos=FD_pos,
+                fd_neg=FD_neg,
+            )
+        )
+        regs = regions_flags(label)
+        return label,regs
 
     @staticmethod
     def evidences(mu_p: float, lam_p: float, gc: float, gct: float, gcr: float) -> Dict[str, float]:
         phi = 1.0 - abs(gct)
         muE = (gc + 1.0) / 2.0
         muECT = (gct + 1.0) / 2.0
-        muER = (gcr + 1.0) / 2.0
+        muER = (gc + gct + 1.0) / 2.0  
         muE_p = ((mu_p - lam_p) + 1.0) / 2.0
         phiE = phi
         return {"phi": phi, "muE": muE, "muECT": muECT, "muER": muER, "muE_p": muE_p, "phiE": phiE}
+
 
 
     @classmethod
@@ -61,6 +83,7 @@ class ParaconsistentEngine:
         gct_adj = cls.adjust_contradiction(gct, params)
         d, D, gcr = cls.geometry(mu, lam, gc)
         ev = cls.evidences(mu_p, lam_p, gc, gct, gcr)
+        label,regs_flag = cls.classify(params.FtC, params.FD, params.VSSC, params.VSSCT, params.VICC, params.VICCT, params.VlV, params.VlF, gc, gct)
         complete: Complete = {
             # parâmetros
             "FL": params.FL, "FtC": params.FtC, "FD": params.FD,
@@ -71,6 +94,7 @@ class ParaconsistentEngine:
             # graus / derivados
             "gc": gc, "gct": gct, "gct_adj": gct_adj,
             "d": d, "D": D, "gcr": gcr,
+            "label": label, "Regions": regs_flag,
             # evidências
             **ev,
         }

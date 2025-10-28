@@ -7,7 +7,7 @@ Paraconsistent Lib é uma biblioteca Python para construir redes de raciocínio 
 Item: Requisito
 Linguagem: Python 3.9+
 Dependências: Biblioteca padrão
-Instalação: pip install -e . (modo editável)
+Instalação: pip install paraconsistent
 Organização: core/{metrics,config,types,engine} e paraconsistent/block
 
 3. Guia
@@ -18,7 +18,7 @@ A ideia central do Paraconsistent Lib é que cada bloco representa uma unidade d
 
 O primeiro passo para a criação do seu programa paraconsistente começa com o setup dos blocos. Basicamente, para criar o bloco, você deve importar e instanciar a classe ParaconsistentBlock.
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 # 1) Criar o bloco
 b = ParaconsistentBlock()
 
@@ -27,7 +27,7 @@ b = ParaconsistentBlock()
 
 Em seguida, você deve configurar os parâmetros do bloco. Ele vem com valores padrão caso não queira alterar. A definição dessas configurações segue o padrão (<objeto do bloco>).config.<parâmetro>. Todas as configurações disponíveis estão na seção 5. API do Bloco.
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 # 1) Criar o bloco
 b = ParaconsistentBlock()
 # 2) Ajustar parâmetros
@@ -43,7 +43,7 @@ Agora precisamos definir os valores de entrada do nosso bloco, no caso λ (lam) 
 
 
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 # 1) Criar o bloco
 b = ParaconsistentBlock()
 # 2) Ajustar parâmetros
@@ -56,7 +56,7 @@ b.input.lam = 0.40
 
 Por fim, como a execução é em tempo real, o modelo computa ao definir valores. Você pode obter os valores por (<objeto do bloco>).complete.<parâmetro> individualmente ou obter tudo com print_complete(), que é o que faremos. Todos os parâmetros disponíveis estão na seção 5. API do Bloco.
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 
 # 1) Criar o bloco
 b = ParaconsistentBlock()
@@ -77,7 +77,7 @@ b.print_complete()
 
 Vimos até aqui como criar blocos; porém, um bloco sozinho não faz muita coisa. Agora veremos como conectar blocos para formar uma estrutura mais complexa. Para demonstrar, criaremos o Bloco 1 (B1) e o Bloco 2 (B2), seguindo os passos de criação, configuração (preferencialmente) e alimentação de um dos blocos, no caso o B1.
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 
 b1 = ParaconsistentBlock()
 b2 = ParaconsistentBlock()
@@ -92,7 +92,7 @@ b1.input.mu  = 0.2
 
 Agora, para conectar os blocos entre si, basta utilizar diretamente os parâmetros de entrada, como mostrado na seção 3.3 Executando um Bloco. Você pode usar cálculos ou apenas o valor da saída de outro bloco, conforme a demonstração:
 
-from mrn.paraconsistent.block import ParaconsistentBlock
+from paraconsistent.blocks import ParaconsistentBlock
 
 b1 = ParaconsistentBlock()
 b2 = ParaconsistentBlock()
@@ -190,5 +190,5 @@ Parâmetros (FL, FtC, FD, VSSC, VICC, VSSCT, VICCT, VlV, VlF, L) | Eco dos valor
 
 10. Licença
 
-Escolha conforme o repositório (ex.: MIT).
+MIT
 
