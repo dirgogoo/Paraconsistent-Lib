@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paraconsistent"                 # escolha um nome disponível no PyPI
-version = "0.1.8"
+version = "0.2.0"
 description = "Blocos de lógica paraconsistente com API simples."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -32,7 +32,7 @@ where = ["src"]
 include = ["paraconsistent*"]   # <— trocado de mrn* para paraconsistent*
 
 [tool.setuptools.package-data]
-mrn = ["py.typed"]                         # distribui tipagem
+paraconsistent = ["py.typed"]                         # distribui tipagem
 
 [tool.setuptools.exclude-package-data]
-"mrn" = ["**/tests/*", "**/examples/*"]    # evita levar exemplos/testes
+"paraconsistent" = ["**/tests/*", "**/examples/*"]    # evita levar exemplos/testes
