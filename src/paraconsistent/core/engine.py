@@ -14,44 +14,75 @@ __all__ = ["ParaconsistentEngine"]
 
 class ParaconsistentEngine:
 
-
-    @staticmethod
-    def preprocess_inputs(mu: float, lam: float, P: BlockParams) -> Tuple[float, float, float, float]:
-        mu = clamp01(mu)
-        lam = clamp01(lam)
-        mu_p = clamp01(mu / P.FL if P.FL != 0 else mu)
-        lam_p = clamp01(lam / P.FL if P.FL != 0 else lam)
-        return mu, lam, mu_p, lam_p
-
-
     @staticmethod
     def core_degrees(mu: float, lam: float) -> Tuple[float, float]:
+        """Calcula graus de certeza e contradição.
+
+        Args:
+            mu: Grau de evidência favorável (0-1)
+            lam: Grau de evidência desfavorável (0-1)
+
+        Returns:
+            Tupla (gc, gct) onde:
+            - gc: Grau de Certeza (Certainty Degree)
+            - gct: Grau de Contradição (Contradiction Degree)
+        """
         gc = mu - lam
         gct = mu + lam - 1.0
         return gc, gct
 
 
     @staticmethod
-    def adjust_contradiction(gct: float, P: BlockParams) -> float:
-        return max(-1.0, min(1.0, gct + P.FL * (P.VSSCT + P.VICCT) * 0.5))
-
-
-    @staticmethod
     def geometry(mu: float, lam: float, gc: float) -> Tuple[float, float, float]:
+        """Calcula métricas geométricas e certeza radial.
+
+        Args:
+            mu: Grau de evidência favorável
+            lam: Grau de evidência desfavorável
+            gc: Grau de Certeza
+
+        Returns:
+            Tupla (d, D, gcr) onde:
+            - d: Distância radial
+            - D: Distância normalizada
+            - gcr: Grau de Certeza Radial (Real Certainty Degree)
+        """
         d = radial_d_to_nearest_apex(mu, lam)
         D = d
         gcr = (1.0 - D) * (1.0 if gc >= 0 else -1.0)
         return d, D, gcr
 
     @staticmethod
-    def classify(ftc: float, fd: float,vssc: float, vssct:float,vicc:float, vicct:float,vlv:float,vlf:float, gc: float, gct: float) -> Tuple[str, dict]:
+    def classify(ftc: float, vlv: float, vlf: float, gc: float, gct: float) -> Tuple[str, dict]:
+        """Classifica o estado lógico em uma das 12 regiões.
+
+        Args:
+            ftc: Certainty Control Limit (CCL)
+            vlv: Viés pró-verdadeiro
+            vlf: Viés pró-falso
+            gc: Grau de Certeza
+            gct: Grau de Contradição
+
+        Returns:
+            Tupla (label, regions) onde:
+            - label: Rótulo da região (V, F, ┬, ┴, etc)
+            - regions: Dicionário de flags booleanas por região
+        """
+        # Calcular VSSC, VICC, VSSCT, VICCT baseados em FtC (como no MATLAB)
+        vssc = ftc
+        vicc = -ftc
+        vssct = 1.0 - ftc
+        vicct = ftc - 1.0
+
+        # Calcular limiares efetivos
         FtC_pos = max(ftc, abs(vssc))   # GC>0
         FtC_neg = max(ftc, abs(vicc))   # GC<0
-        FD_pos  = max(fd,  abs(vssct))  # GCT>0
-        FD_neg  = max(fd,  abs(vicct))  # GCT<0
+        FD_pos  = abs(vssct)  # GCT>0
+        FD_neg  = abs(vicct)  # GCT<0
 
         FtC_pos_eff = max(FtC_pos - vlv, ftc)  # nunca abaixo de FtC
         FtC_neg_eff = max(FtC_neg - vlf, ftc)
+
         label = classify_12_regions_asymmetric(
             gc, gct,
             ThresholdsAsym(
@@ -62,39 +93,119 @@ class ParaconsistentEngine:
             )
         )
         regs = regions_flags(label)
-        return label,regs
+        return label, regs
 
     @staticmethod
-    def evidences(mu_p: float, lam_p: float, gc: float, gct: float, gcr: float) -> Dict[str, float]:
+    def evidences(gc: float, gct: float, gcr: float) -> Dict[str, float]:
+        """Calcula evidências normalizadas.
+
+        Args:
+            gc: Grau de Certeza
+            gct: Grau de Contradição
+            gcr: Grau de Certeza Radial
+
+        Returns:
+            Dicionário com evidências:
+            - phi: Intervalo de certeza
+            - muE: Evidência baseada em gc (MIE no MATLAB)
+            - muECT: Evidência baseada em gct (MIEct no MATLAB)
+            - muER: Evidência Real baseada em gcr (MIER no MATLAB) ⚠️ CORRIGIDO
+            - phiE: Intervalo de certeza (alias)
+        """
         phi = 1.0 - abs(gct)
         muE = (gc + 1.0) / 2.0
         muECT = (gct + 1.0) / 2.0
-        muER = (gc + gct + 1.0) / 2.0  
-        muE_p = ((mu_p - lam_p) + 1.0) / 2.0
+        muER = (gcr + 1.0) / 2.0  # CORRIGIDO: era (gc + gct + 1.0) / 2.0
         phiE = phi
-        return {"phi": phi, "muE": muE, "muECT": muECT, "muER": muER, "muE_p": muE_p, "phiE": phiE}
+        return {
+            "phi": phi,
+            "muE": muE,
+            "muECT": muECT,
+            "muER": muER,
+            "phiE": phiE
+        }
 
+    @staticmethod
+    def decision_output(muER: float, ftc: float) -> float:
+        """Calcula saída de decisão baseada em muER vs FtC.
+
+        Args:
+            muER: Evidência Real (MIER)
+            ftc: Certainty Control Limit (CCL)
+
+        Returns:
+            1.0 se muER > ftc
+            0.0 se muER < ftc
+            0.5 se muER == ftc
+        """
+        if muER > ftc:
+            return 1.0
+        elif muER < ftc:
+            return 0.0
+        else:
+            return 0.5
 
 
     @classmethod
     def compute(cls, *, mu: float, lam: float, params: BlockParams) -> SimpleNamespace:
-        mu, lam, mu_p, lam_p = cls.preprocess_inputs(mu, lam, params)
+        """Computa todos os resultados do bloco paraconsistente.
+
+        Workflow:
+        1. Clampar inputs (mu, lam) no intervalo [0, 1]
+        2. Calcular graus principais (gc, gct)
+        3. Calcular geometria (d, D, gcr)
+        4. Calcular evidências (muE, muECT, muER, phi)
+        5. Calcular saída de decisão (decision_output)
+        6. Classificar estado lógico (label)
+
+        Args:
+            mu: Grau de evidência favorável
+            lam: Grau de evidência desfavorável
+            params: Parâmetros do bloco (FtC, VlV, VlF, L)
+
+        Returns:
+            SimpleNamespace com todos os campos calculados
+        """
+        # 1. Clampar inputs
+        mu = clamp01(mu)
+        lam = clamp01(lam)
+
+        # 2. Graus principais
         gc, gct = cls.core_degrees(mu, lam)
-        gct_adj = cls.adjust_contradiction(gct, params)
+
+        # 3. Geometria
         d, D, gcr = cls.geometry(mu, lam, gc)
-        ev = cls.evidences(mu_p, lam_p, gc, gct, gcr)
-        label,regs_flag = cls.classify(params.FtC, params.FD, params.VSSC, params.VSSCT, params.VICC, params.VICCT, params.VlV, params.VlF, gc, gct)
+
+        # 4. Evidências (com muER correto)
+        ev = cls.evidences(gc, gct, gcr)
+
+        # 5. Saída de decisão
+        decision = cls.decision_output(ev["muER"], params.FtC)
+
+        # 6. Classificação
+        label, regs_flag = cls.classify(params.FtC, params.VlV, params.VlF, gc, gct)
+
+        # 7. Montar resultado completo
         complete: Complete = {
             # parâmetros
-            "FL": params.FL, "FtC": params.FtC, "FD": params.FD,
-            "VSSC": params.VSSC, "VICC": params.VICC, "VSSCT": params.VSSCT, "VICCT": params.VICCT,
-            "VlV": params.VlV, "VlF": params.VlF, "L": params.L,
+            "FtC": params.FtC,
+            "VlV": params.VlV,
+            "VlF": params.VlF,
+            "L": params.L,
             # entradas
-            "mu": mu, "lam": lam, "mu_p": mu_p, "lam_p": lam_p,
+            "mu": mu,
+            "lam": lam,
             # graus / derivados
-            "gc": gc, "gct": gct, "gct_adj": gct_adj,
-            "d": d, "D": D, "gcr": gcr,
-            "label": label, "Regions": regs_flag,
+            "gc": gc,
+            "gct": gct,
+            "d": d,
+            "D": D,
+            "gcr": gcr,
+            # decisão
+            "decision_output": decision,
+            # classificação
+            "label": label,
+            "Regions": regs_flag,
             # evidências
             **ev,
         }
