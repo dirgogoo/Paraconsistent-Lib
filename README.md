@@ -99,10 +99,6 @@ bloco = ParaconsistentBlock()
 
 # Configurar limite de controle de certeza (FtC)
 bloco.config.FtC = 0.70
-
-# Configurar vieses (opcional)
-bloco.config.VlV = 0.50  # Viés pró-verdadeiro
-bloco.config.VlF = 0.50  # Viés pró-falso
 ```
 
 ### 4.3 Alimentando Entradas
