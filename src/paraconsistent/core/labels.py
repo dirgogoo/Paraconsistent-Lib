@@ -31,8 +31,13 @@ def classify_12_regions_asymmetric(gc: float, gct: float, th: ThresholdsAsym) ->
     if in_central:
         a, b = abs(gc), abs(gct)
         if b > a:
-            # contradição domina
-            return "Q┬→V" if gc >= 0 else "Q┬→F"
+            # contradição/indeterminação domina - verificar sinal de gct
+            if gct >= 0:
+                # tendência à inconsistência (┬)
+                return "Q┬→V" if gc >= 0 else "Q┬→F"
+            else:
+                # tendência à indeterminação (┴)
+                return "Q┴→V" if gc >= 0 else "Q┴→F"
         elif a > b:
             # certeza domina
             if gc >= 0:
@@ -52,5 +57,5 @@ def classify_12_regions_asymmetric(gc: float, gct: float, th: ThresholdsAsym) ->
 
 def regions_flags(label: str) -> dict:
     # booleans por região para paridade com estruturas antigas
-    keys = ["V","F","┬","┴","Q┬→V","Q┬→F","QV→┬","QF→┬","QV→┴","QF→┴","QV","QF","I"]
+    keys = ["V","F","┬","┴","Q┬→V","Q┬→F","QV→┬","QF→┬","QV→┴","QF→┴","Q┴→V","Q┴→F","I"]
     return {k: (k == label) for k in keys}
