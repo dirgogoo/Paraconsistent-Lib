@@ -169,9 +169,6 @@ ParaconsistentBlock(
 | Parâmetro | Tipo | Faixa | Padrão | Descrição |
 |-----------|------|-------|--------|-----------|
 | FtC | float | [0, 1] | 0.50 | Fator de Tolerância à Certeza (Certainty Control Limit) |
-| VlV | float | [0, 1] | 0.50 | Viés pró-verdadeiro |
-| VlF | float | [0, 1] | 0.50 | Viés pró-falso |
-| L | float | [0, 1] | 0.05 | Limite inferior mínimo (uso futuro) |
 
 **Nota:** Os valores VSSC, VICC, VSSCT e VICCT são calculados automaticamente a partir de FtC:
 - VSSC = FtC
@@ -211,7 +208,7 @@ Valores são automaticamente clampados no intervalo [0, 1].
 | decision_output | float | {0.0, 0.5, 1.0} | Saída de decisão binária |
 | label | str | - | Rótulo da região lógica (V, F, ┬, ┴, etc.) |
 | Regions | dict | - | Flags booleanas por região |
-| FtC, VlV, VlF, L | float | [0, 1] | Echo dos parâmetros usados no cálculo |
+| FtC, L | float | [0, 1] | Echo dos parâmetros usados no cálculo |
 
 **Saída de Decisão (decision_output):**
 - 1.0 se μER > FtC (Aceitar como verdadeiro)
