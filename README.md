@@ -208,7 +208,7 @@ Valores são automaticamente clampados no intervalo [0, 1].
 | decision_output | float | {0.0, 0.5, 1.0} | Saída de decisão binária |
 | label | str | - | Rótulo da região lógica (V, F, ┬, ┴, etc.) |
 | Regions | dict | - | Flags booleanas por região |
-| FtC, L | float | [0, 1] | Echo dos parâmetros usados no cálculo |
+| FtC| float | [0, 1] | Echo dos parâmetros usados no cálculo |
 
 **Saída de Decisão (decision_output):**
 - 1.0 se μER > FtC (Aceitar como verdadeiro)
@@ -316,15 +316,7 @@ O sistema implementa cache inteligente que invalida automaticamente ao alterar e
 
 A biblioteca foi validada contra casos de teste padrão da literatura, com taxa de acerto superior a 97% em 37 casos de teste independentes.
 
-## 9. Referências Bibliográficas
-
-- Da Silva Filho, J. I., Lambert-Torres, G., & Abe, J. M. (2010). *Uncertainty Treatment Using Paraconsistent Logic: Introducing Paraconsistent Artificial Neural Networks*. IOS Press.
-
-- Abe, J. M. (1992). *Fundamentos da Lógica Anotada* (Foundations of Annotated Logics). PhD Thesis, University of São Paulo.
-
-- Da Costa, N. C. A., Abe, J. M., & Subrahmanian, V. S. (1991). Remarks on annotated logic. *Zeitschrift für mathematische Logik und Grundlagen der Mathematik*, 37(9‐12), 561-570.
-
-## 10. Licença
+## 9. Licença
 
 MIT License
 
@@ -336,11 +328,11 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-## 11. Contribuindo
+## 10. Contribuindo
 
 Contribuições são bem-vindas! Por favor, abra uma issue ou pull request no repositório GitHub.
 
-## 12. Suporte
+## 11. Suporte
 
 - **Repositório**: https://github.com/dirgogoo/Paraconsistent-Lib
 - **PyPI**: https://pypi.org/project/paraconsistent/
