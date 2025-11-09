@@ -7,49 +7,49 @@ class ThresholdsAsym:
     fd_pos: float;  fd_neg: float
     eps: float = 1e-12
 
-def classify_12_regions_asymmetric(Dc: float, Dct: float, th: ThresholdsAsym) -> str:
+def classify_12_regions_asymmetric(dc: float, dct: float, th: ThresholdsAsym) -> str:
     eps = th.eps
 
     # 0) centro exato
-    if abs(Dc) <= eps and abs(Dct) <= eps:
+    if abs(dc) <= eps and abs(dct) <= eps:
         return "I"
 
     # 1) certeza dominante (assimétrica)
-    if Dc >= th.ftc_pos:  # t
+    if dc >= th.ftc_pos:  # t
         return "t"
-    if Dc <= -th.ftc_neg: # f
+    if dc <= -th.ftc_neg: # f
         return "f"
 
     # 2) contradição dominante (assimétrica)
-    if Dct >= th.fd_pos:   # ┬
+    if dct >= th.fd_pos:   # ┬
         return "┬"
-    if Dct <= -th.fd_neg:  # ┴
+    if dct <= -th.fd_neg:  # ┴
         return "┴"
 
     # 3) quadrado central
-    in_central = (Dc < th.ftc_pos and Dc > -th.ftc_neg and Dct < th.fd_pos and Dct > -th.fd_neg)
+    in_central = (dc < th.ftc_pos and dc > -th.ftc_neg and dct < th.fd_pos and dct > -th.fd_neg)
     if in_central:
-        a, b = abs(Dc), abs(Dct)
+        a, b = abs(dc), abs(dct)
         if b > a:
-            # contradição/indeterminação domina - verificar sinal de Dct
-            if Dct >= 0:
+            # contradição/indeterminação domina - verificar sinal de dct
+            if dct >= 0:
                 # tendência à inconsistência (┬)
-                return "Q┬→t" if Dc >= 0 else "Q┬→f"
+                return "Q┬→t" if dc >= 0 else "Q┬→f"
             else:
                 # tendência à indeterminação (┴)
-                return "Q┴→t" if Dc >= 0 else "Q┴→f"
+                return "Q┴→t" if dc >= 0 else "Q┴→f"
         elif a > b:
             # certeza domina
-            if Dc >= 0:
-                return "Qt→┬" if Dct >= 0 else "Qt→┴"
+            if dc >= 0:
+                return "Qt→┬" if dct >= 0 else "Qt→┴"
             else:
-                return "Qf→┬" if Dct >= 0 else "Qf→┴"
+                return "Qf→┬" if dct >= 0 else "Qf→┴"
         else:
-            # empate: preferir Qt/Qf e setar seta pelo sinal de DCT
-            if Dc >= 0:
-                return "Qt→┬" if Dct >= 0 else "Qt→┴"
+            # empate: preferir Qt/Qf e setar seta pelo sinal de dct
+            if dc >= 0:
+                return "Qt→┬" if dct >= 0 else "Qt→┴"
             else:
-                return "Qf→┬" if Dct >= 0 else "Qf→┴"
+                return "Qf→┬" if dct >= 0 else "Qf→┴"
 
     # fallback
     return "I"

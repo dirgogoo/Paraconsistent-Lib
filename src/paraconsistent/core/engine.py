@@ -23,45 +23,45 @@ class ParaconsistentEngine:
             lam: Grau de evidência desfavorável (0-1)
 
         Returns:
-            Tupla (Dc, Dct) onde:
-            - Dc: Degree of Certainty
-            - Dct: Degree of Contradiction
+            Tupla (dc, dct) onde:
+            - dc: degree of certainty
+            - dct: degree of contradiction
         """
-        Dc = mu - lam
-        Dct = mu + lam - 1.0
-        return Dc, Dct
+        dc = mu - lam
+        dct = mu + lam - 1.0
+        return dc, dct
 
 
     @staticmethod
-    def geometry(mu: float, lam: float, Dc: float) -> Tuple[float, float, float]:
+    def geometry(mu: float, lam: float, dc: float) -> Tuple[float, float, float]:
         """Calcula métricas geométricas e certeza radial.
 
         Args:
             mu: Grau de evidência favorável
             lam: Grau de evidência desfavorável
-            Dc: Degree of Certainty
+            dc: degree of certainty
 
         Returns:
-            Tupla (d, D, Dcr) onde:
+            Tupla (d, D, dcr) onde:
             - d: Distância radial
             - D: Distância normalizada (clampada em 1.0)
-            - Dcr: Degree of Real Certainty
+            - dcr: degree of real certainty
         """
         d = radial_d_to_nearest_apex(mu, lam)
         D = min(d, 1.0)  # Clampar D em 1.0 para alinhar com planilha de referência
-        Dcr = (1.0 - D) * (1.0 if Dc >= 0 else -1.0)
-        return d, D, Dcr
+        dcr = (1.0 - D) * (1.0 if dc >= 0 else -1.0)
+        return d, D, dcr
 
     @staticmethod
-    def classify(ftc: float, vlv: float, vlf: float, Dc: float, Dct: float) -> Tuple[str, dict]:
+    def classify(ftc: float, vlv: float, vlf: float, dc: float, dct: float) -> Tuple[str, dict]:
         """Classifica o estado lógico em uma das 12 regiões.
 
         Args:
             ftc: Certainty Control Limit (CCL)
             vlv: Viés pró-verdadeiro
             vlf: Viés pró-falso
-            Dc: Degree of Certainty
-            Dct: Degree of Contradiction
+            dc: degree of certainty
+            dct: degree of contradiction
 
         Returns:
             Tupla (label, regions) onde:
@@ -75,16 +75,16 @@ class ParaconsistentEngine:
         vicct = ftc - 1.0
 
         # Calcular limiares efetivos
-        FtC_pos = max(ftc, abs(vssc))   # DC>0
-        FtC_neg = max(ftc, abs(vicc))   # DC<0
-        FD_pos  = abs(vssct)  # DCT>0
-        FD_neg  = abs(vicct)  # DCT<0
+        FtC_pos = max(ftc, abs(vssc))   # dc>0
+        FtC_neg = max(ftc, abs(vicc))   # dc<0
+        FD_pos  = abs(vssct)  # dct>0
+        FD_neg  = abs(vicct)  # dct<0
 
         FtC_pos_eff = max(FtC_pos - vlv, ftc)  # nunca abaixo de FtC
         FtC_neg_eff = max(FtC_neg - vlf, ftc)
 
         label = classify_12_regions_asymmetric(
-            Dc, Dct,
+            dc, dct,
             ThresholdsAsym(
                 ftc_pos=FtC_pos_eff,
                 ftc_neg=FtC_neg_eff,
@@ -96,26 +96,26 @@ class ParaconsistentEngine:
         return label, regs
 
     @staticmethod
-    def evidences(Dc: float, Dct: float, Dcr: float) -> Dict[str, float]:
+    def evidences(dc: float, dct: float, dcr: float) -> Dict[str, float]:
         """Calcula evidências normalizadas.
 
         Args:
-            Dc: Degree of Certainty
-            Dct: Degree of Contradiction
-            Dcr: Degree of Real Certainty
+            dc: degree of certainty
+            dct: degree of contradiction
+            dcr: degree of real certainty
 
         Returns:
             Dicionário com evidências:
             - phi: Intervalo de certeza
-            - muE: Evidência baseada em Dc (MIE no MATLAB)
-            - muECT: Evidência baseada em Dct (MIEct no MATLAB)
-            - muER: Evidência Real baseada em Dcr (MIER no MATLAB) ⚠️ CORRIGIDO
+            - muE: Evidência baseada em dc (MIE no MATLAB)
+            - muECT: Evidência baseada em dct (MIEct no MATLAB)
+            - muER: Evidência Real baseada em dcr (MIER no MATLAB) ⚠️ CORRIGIDO
             - phiE: Intervalo de certeza (alias)
         """
-        phi = 1.0 - abs(Dct)
-        muE = (Dc + 1.0) / 2.0
-        muECT = (Dct + 1.0) / 2.0
-        muER = (Dcr + 1.0) / 2.0  # CORRIGIDO: era (Dc + Dct + 1.0) / 2.0
+        phi = 1.0 - abs(dct)
+        muE = (dc + 1.0) / 2.0
+        muECT = (dct + 1.0) / 2.0
+        muER = (dcr + 1.0) / 2.0  # CORRIGIDO: era (dc + dct + 1.0) / 2.0
         phiE = phi
         return {
             "phi": phi,
@@ -152,8 +152,8 @@ class ParaconsistentEngine:
 
         Workflow:
         1. Clampar inputs (mu, lam) no intervalo [0, 1]
-        2. Calcular graus principais (Dc, Dct)
-        3. Calcular geometria (d, D, Dcr)
+        2. Calcular graus principais (dc, dct)
+        3. Calcular geometria (d, D, dcr)
         4. Calcular evidências (muE, muECT, muER, phi)
         5. Calcular saída de decisão (decision_output)
         6. Classificar estado lógico (label)
@@ -171,19 +171,19 @@ class ParaconsistentEngine:
         lam = clamp01(lam)
 
         # 2. Graus principais
-        Dc, Dct = cls.core_degrees(mu, lam)
+        dc, dct = cls.core_degrees(mu, lam)
 
         # 3. Geometria
-        d, D, Dcr = cls.geometry(mu, lam, Dc)
+        d, D, dcr = cls.geometry(mu, lam, dc)
 
         # 4. Evidências (com muER correto)
-        ev = cls.evidences(Dc, Dct, Dcr)
+        ev = cls.evidences(dc, dct, dcr)
 
         # 5. Saída de decisão
         decision = cls.decision_output(ev["muER"], params.FtC)
 
         # 6. Classificação
-        label, regs_flag = cls.classify(params.FtC, params.VlV, params.VlF, Dc, Dct)
+        label, regs_flag = cls.classify(params.FtC, params.VlV, params.VlF, dc, dct)
 
         # 7. Montar resultado completo
         complete: Complete = {
@@ -196,11 +196,11 @@ class ParaconsistentEngine:
             "mu": mu,
             "lam": lam,
             # graus / derivados
-            "Dc": Dc,
-            "Dct": Dct,
+            "dc": dc,
+            "dct": dct,
             "d": d,
             "D": D,
-            "Dcr": Dcr,
+            "dcr": dcr,
             # decisão
             "decision_output": decision,
             # classificação

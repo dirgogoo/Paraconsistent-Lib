@@ -12,8 +12,8 @@ class Complete(TypedDict):
     # entradas
     mu: float; lam: float
     # graus e derivados
-    Dc: float; Dct: float
-    d: float; D: float; Dcr: float
+    dc: float; dct: float
+    d: float; D: float; dcr: float
     # evidências
     muE: float; muECT: float; muER: float
     phi: float; phiE: float

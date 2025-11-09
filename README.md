@@ -39,8 +39,8 @@ A LPA2v trabalha com dois graus de evidência:
 
 A partir destes valores, são calculados:
 
-- **DC (Degree of Certainty)**: DC = μ - λ, DC ∈ [-1, 1]
-- **DCT (Degree of Contradiction)**: DCT = μ + λ - 1, DCT ∈ [-1, 1]
+- **dc (Degree of Certainty)**: dc = μ - λ, dc ∈ [-1, 1]
+- **dct (Degree of Contradiction)**: dct = μ + λ - 1, dct ∈ [-1, 1]
 
 ### 3.2 Regiões de Estados Lógicos
 
@@ -69,15 +69,15 @@ A LPA2v define 12 regiões no quadrado unitário de anotação (QUPC):
 - **D**: Distância normalizada (clampada em [0, 1])
 
 **Degree of Real Certainty:**
-- **DCR**: DCR = (1 - D) × sign(DC)
+- **dcr**: dcr = (1 - D) × sign(dc)
 
 **Evidências Resultantes:**
-- **μE**: Evidência baseada em DC, μE = (DC + 1) / 2
-- **μECT**: Evidência de contradição, μECT = (DCT + 1) / 2
-- **μER**: Evidência real, μER = (DCR + 1) / 2
+- **μE**: Evidência baseada em dc, μE = (dc + 1) / 2
+- **μECT**: Evidência de contradição, μECT = (dct + 1) / 2
+- **μER**: Evidência real, μER = (dcr + 1) / 2
 
 **Intervalo de Certeza:**
-- **φ (phi)**: φ = 1 - |DCT|
+- **φ (phi)**: φ = 1 - |dct|
 
 ## 4. Guia de Uso
 
@@ -115,8 +115,8 @@ bloco.input.lam = 0.20  # Evidência desfavorável
 
 ```python
 # Acessar resultados individuais
-Dc = bloco.complete.Dc       # Degree of Certainty
-Dct = bloco.complete.Dct     # Degree of Contradiction
+dc = bloco.complete.dc       # Degree of Certainty
+dct = bloco.complete.dct     # Degree of Contradiction
 muER = bloco.complete.muER   # Evidência Real
 label = bloco.complete.label # Região lógica
 
@@ -195,16 +195,16 @@ Valores são automaticamente clampados no intervalo [0, 1].
 |-------|------|-------|-----------|
 | mu | float | [0, 1] | Grau de evidência favorável |
 | lam | float | [0, 1] | Grau de evidência desfavorável |
-| Dc | float | [-1, 1] | Degree of Certainty: μ - λ |
-| Dct | float | [-1, 1] | Degree of Contradiction: μ + λ - 1 |
+| dc | float | [-1, 1] | Degree of Certainty: μ - λ |
+| dct | float | [-1, 1] | Degree of Contradiction: μ + λ - 1 |
 | d | float | [0, ∞) | Distância radial bruta |
 | D | float | [0, 1] | Distância radial normalizada |
-| Dcr | float | [-1, 1] | Degree of Real Certainty: (1 - D) × sign(Dc) |
-| phi | float | [0, 1] | Intervalo de certeza: 1 - \|Dct\| |
+| dcr | float | [-1, 1] | Degree of Real Certainty: (1 - D) × sign(dc) |
+| phi | float | [0, 1] | Intervalo de certeza: 1 - \|dct\| |
 | phiE | float | [0, 1] | Intervalo de certeza (alias de phi) |
-| muE | float | [0, 1] | Evidência resultante: (Dc + 1) / 2 |
-| muECT | float | [0, 1] | Evidência de contradição: (Dct + 1) / 2 |
-| muER | float | [0, 1] | Evidência real: (Dcr + 1) / 2 |
+| muE | float | [0, 1] | Evidência resultante: (dc + 1) / 2 |
+| muECT | float | [0, 1] | Evidência de contradição: (dct + 1) / 2 |
+| muER | float | [0, 1] | Evidência real: (dcr + 1) / 2 |
 | decision_output | float | {0.0, 0.5, 1.0} | Saída de decisão binária |
 | label | str | - | Rótulo da região lógica (t, f, ┬, ┴, etc.) |
 | Regions | dict | - | Flags booleanas por região |
@@ -275,7 +275,7 @@ bloco.input.mu = 0.9
 bloco.input.lam = 0.8
 
 # Analisar contradição
-print(f"Degree of Contradiction: {bloco.complete.Dct:.2f}")
+print(f"Degree of Contradiction: {bloco.complete.dct:.2f}")
 print(f"Região Lógica: {bloco.complete.label}")
 
 if "┬" in bloco.complete.label:
@@ -302,8 +302,8 @@ paraconsistent/
 ### 7.2 Fluxo de Cálculo
 
 1. **Entrada**: Validação e clamping de μ e λ
-2. **Graus Principais**: Cálculo de GC e GCT
-3. **Geometria**: Cálculo de d, D e GCR
+2. **Graus Principais**: Cálculo de dc e dct
+3. **Geometria**: Cálculo de d, D e dcr
 4. **Evidências**: Cálculo de μE, μECT, μER e φ
 5. **Decisão**: Comparação de μER com FtC
 6. **Classificação**: Identificação da região lógica
