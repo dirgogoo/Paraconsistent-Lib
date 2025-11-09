@@ -39,28 +39,28 @@ A LPA2v trabalha com dois graus de evidência:
 
 A partir destes valores, são calculados:
 
-- **GC (Grau de Certeza)**: GC = μ - λ, GC ∈ [-1, 1]
-- **GCT (Grau de Contradição)**: GCT = μ + λ - 1, GCT ∈ [-1, 1]
+- **DC (Degree of Certainty)**: DC = μ - λ, DC ∈ [-1, 1]
+- **DCT (Degree of Contradiction)**: DCT = μ + λ - 1, DCT ∈ [-1, 1]
 
 ### 3.2 Regiões de Estados Lógicos
 
 A LPA2v define 12 regiões no quadrado unitário de anotação (QUPC):
 
 **Estados Extremos:**
-- **V (Verdadeiro)**: Alta certeza positiva
-- **F (Falso)**: Alta certeza negativa
-- **┬ (Inconsistente)**: Alta contradição
-- **┴ (Indeterminado)**: Baixa informação
+- **t (true)**: Alta certeza positiva
+- **f (false)**: Alta certeza negativa
+- **┬ (Inconsistent)**: Alta contradição
+- **┴ (Indeterminate)**: Baixa informação
 
 **Estados de Transição:**
-- **Q┬→V**: Quase inconsistente tendendo ao verdadeiro
-- **Q┬→F**: Quase inconsistente tendendo ao falso
-- **QV→┬**: Quase verdadeiro tendendo à inconsistência
-- **QF→┬**: Quase falso tendendo à inconsistência
-- **QV→┴**: Quase verdadeiro tendendo à indeterminação
-- **QF→┴**: Quase falso tendendo à indeterminação
-- **Q┴→V**: Quase indeterminado tendendo ao verdadeiro
-- **Q┴→F**: Quase indeterminado tendendo ao falso
+- **Q┬→t**: Quase inconsistente tendendo ao verdadeiro
+- **Q┬→f**: Quase inconsistente tendendo ao falso
+- **Qt→┬**: Quase verdadeiro tendendo à inconsistência
+- **Qf→┬**: Quase falso tendendo à inconsistência
+- **Qt→┴**: Quase verdadeiro tendendo à indeterminação
+- **Qf→┴**: Quase falso tendendo à indeterminação
+- **Q┴→t**: Quase indeterminado tendendo ao verdadeiro
+- **Q┴→f**: Quase indeterminado tendendo ao falso
 
 ### 3.3 Métricas Complementares
 
@@ -68,16 +68,16 @@ A LPA2v define 12 regiões no quadrado unitário de anotação (QUPC):
 - **d**: Distância euclidiana ao vértice mais próximo
 - **D**: Distância normalizada (clampada em [0, 1])
 
-**Grau de Certeza Radial:**
-- **GCR**: GCR = (1 - D) × sign(GC)
+**Degree of Real Certainty:**
+- **DCR**: DCR = (1 - D) × sign(DC)
 
 **Evidências Resultantes:**
-- **μE**: Evidência baseada em GC, μE = (GC + 1) / 2
-- **μECT**: Evidência de contradição, μECT = (GCT + 1) / 2
-- **μER**: Evidência real, μER = (GCR + 1) / 2
+- **μE**: Evidência baseada em DC, μE = (DC + 1) / 2
+- **μECT**: Evidência de contradição, μECT = (DCT + 1) / 2
+- **μER**: Evidência real, μER = (DCR + 1) / 2
 
 **Intervalo de Certeza:**
-- **φ (phi)**: φ = 1 - |GCT|
+- **φ (phi)**: φ = 1 - |DCT|
 
 ## 4. Guia de Uso
 
@@ -115,8 +115,8 @@ bloco.input.lam = 0.20  # Evidência desfavorável
 
 ```python
 # Acessar resultados individuais
-gc = bloco.complete.gc       # Grau de Certeza
-gct = bloco.complete.gct     # Grau de Contradição
+Dc = bloco.complete.Dc       # Degree of Certainty
+Dct = bloco.complete.Dct     # Degree of Contradiction
 muER = bloco.complete.muER   # Evidência Real
 label = bloco.complete.label # Região lógica
 
@@ -162,7 +162,7 @@ ParaconsistentBlock(
 **Parâmetros:**
 - `mu`: Grau de evidência favorável inicial (opcional)
 - `lam`: Grau de evidência desfavorável inicial (opcional)
-- `**param_overrides`: Parâmetros de configuração (FtC, VlV, VlF, L)
+- `**param_overrides`: Parâmetros de configuração (FtC)
 
 ### 5.2 Configuração (config)
 
@@ -195,18 +195,18 @@ Valores são automaticamente clampados no intervalo [0, 1].
 |-------|------|-------|-----------|
 | mu | float | [0, 1] | Grau de evidência favorável |
 | lam | float | [0, 1] | Grau de evidência desfavorável |
-| gc | float | [-1, 1] | Grau de Certeza: μ - λ |
-| gct | float | [-1, 1] | Grau de Contradição: μ + λ - 1 |
+| Dc | float | [-1, 1] | Degree of Certainty: μ - λ |
+| Dct | float | [-1, 1] | Degree of Contradiction: μ + λ - 1 |
 | d | float | [0, ∞) | Distância radial bruta |
 | D | float | [0, 1] | Distância radial normalizada |
-| gcr | float | [-1, 1] | Grau de Certeza Radial: (1 - D) × sign(gc) |
-| phi | float | [0, 1] | Intervalo de certeza: 1 - \|gct\| |
+| Dcr | float | [-1, 1] | Degree of Real Certainty: (1 - D) × sign(Dc) |
+| phi | float | [0, 1] | Intervalo de certeza: 1 - \|Dct\| |
 | phiE | float | [0, 1] | Intervalo de certeza (alias de phi) |
-| muE | float | [0, 1] | Evidência resultante: (gc + 1) / 2 |
-| muECT | float | [0, 1] | Evidência de contradição: (gct + 1) / 2 |
-| muER | float | [0, 1] | Evidência real: (gcr + 1) / 2 |
+| muE | float | [0, 1] | Evidência resultante: (Dc + 1) / 2 |
+| muECT | float | [0, 1] | Evidência de contradição: (Dct + 1) / 2 |
+| muER | float | [0, 1] | Evidência real: (Dcr + 1) / 2 |
 | decision_output | float | {0.0, 0.5, 1.0} | Saída de decisão binária |
-| label | str | - | Rótulo da região lógica (V, F, ┬, ┴, etc.) |
+| label | str | - | Rótulo da região lógica (t, f, ┬, ┴, etc.) |
 | Regions | dict | - | Flags booleanas por região |
 | FtC| float | [0, 1] | Echo dos parâmetros usados no cálculo |
 
@@ -224,8 +224,8 @@ resultado: Complete = bloco.to_dict()
 # Imprimir formatado no console
 bloco.print_complete()
 
-# Configurar múltiplos parâmetros
-bloco.set_params(FtC=0.7, VlV=0.6, VlF=0.4)
+# Configurar parâmetro FtC
+bloco.set_params(FtC=0.7)
 ```
 
 ## 6. Exemplos Avançados
@@ -275,7 +275,7 @@ bloco.input.mu = 0.9
 bloco.input.lam = 0.8
 
 # Analisar contradição
-print(f"Grau de Contradição: {bloco.complete.gct:.2f}")
+print(f"Degree of Contradiction: {bloco.complete.Dct:.2f}")
 print(f"Região Lógica: {bloco.complete.label}")
 
 if "┬" in bloco.complete.label:
