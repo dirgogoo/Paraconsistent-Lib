@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background: white;
+}
+
+.content {
+  max-width: 1000px;
+  margin: auto;
+  background: white;
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="content">
+<center>
+<img src="https://github.com/EAILAB-IFSP/Home/blob/Home/Logo_Dourado.jpg?raw=true" class="center" style="width:50%" align="middle">
+</center>
+
+<font face="Arial">
+<h1><b>Paraconsistent Library</b></h1>
+
+
+<h3>This repository consists of a Python Library designed to help users apply paraconsistent annotated evidential logic, making advanced logic tools accessible and encouraging practical adoption.</h3>
+
+<h2><b><p style="color: blue;">How to reference the project:</p></b></h2>
+<h3>At EAILab, our mission is to promote science and the use of artificial intelligence . Therefore, if you use the library in academic work, we would be very grateful if you could cite us, helping to further spread and promote the project.</h3>
+
+<h3>DA CRUZ, Diego Oliveira; ALVES, Bruno. Da Silva; CARVALHO JUNIOR, Arnaldo. Paraconsistent-Lib, Python Library, EAILAB, IFSP, Sao Paulo - Brazil, 2025.</h3>
+<h2><b><p style="color: blue;">Overview</p></b></h2>
+
+<h3>Paraconsistent logic (PL) is a type of logical reasoning that   is   interesting   to  deal  with   contradictory   signals because, contrary to classical logic, it does not consider a contradiction  as  a  foundation  for  invalidating  the  entire inference  system.  PL enables  the  quantification  of the degree  of  contradiction  and  certainty  of  information, allowing conflicting data  to be  processed in a  controlled manner and without loss of consistency.<h3>
+    <p>
+        <h3><a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197623015269">Read more about </a></h3>
+
+<h3><b>Main Features:</b></h3>
+<h3>• Modular architecture based on connectable blocks</h3>
+<h3>• Zero external dependencies, it's necessary only the standard Python library.</h3> 
+<h3>• Complete implementation of LPA2v with 12 logical state regions</h3>
+<h3>• Automatic calculation of degrees of certainty, contradiction, and evidence</h3>
+<h3>• Type-safe with full support for Python type hints</h3>
+<h3>• Smart caching for performance optimization
+</h3>
+
+
+<h2><b><p style="color: blue;">How to install</p></b></h2>
+<h3>Requirements: Python 3.9 or higher</h3>
+
+<h3>The installation is done via pip. 
+  <p>To install, simply type the following command in your terminal:</p>
+</h3>
+<center><h3>• pip install paraconsistent </h3></center>
+
+<h2><b><p style="color: blue;">Theory of Logic</p></b></h2>
+    
+    <h3>LPA2v works with two degrees of evidence:</h3>
+    <h3>• μ (mu): Favorable evidence degree, μ ∈ [0, 1]</h3>
+    <h3>• λ (lambda): Unfavorable evidence degree, λ ∈ [0, 1]</h3>
+    <h3>From these values, the following are calculated:</h3>
+    <h3>• dc (Degree of Certainty): dc = μ - λ, dc ∈ [-1, 1]</h3>
+    <h3>• dct (Degree of Contradiction): dct = μ + λ - 1, dct ∈ [-1, 1]</h3>
+    <h2><b><p>Decision Output: </p></b></h2>
+<h3>• 1.0 if μER > FtC (Accept as true)</h3>
+<h3>• 0.0 if μER < FtC (Reject as false)</h3>
+<h3>• 0.5 if μER = FtC (Indecision)</h3>
+
+<h2><b><p style="color: blue;">Complementary Metrics</p></b></h2>
+  
+    <h3><b>Radial Distance:</b></h3>
+    <h3>• d: Euclidean distance to the nearest vertex</h3>
+    <h3>• D: Normalized distance (clamped to [0, 1])</h3>
+    <h3><b>Degree of Real Certainty:</b></h3>
+    <h3>• dcr: dcr = (1 - D) × sign(dc)</h3>
+
+    <h3><b>Resulting Evidence:</b></h3>
+    <h3>• μE: Evidence based on contradiction: μE = (dc + 1) / 2 </h3>
+    <h3>• μECT: Evidence of contradiction: μECT = (dct + 1) / 2 </h3>
+    
+    <h3>• μER: Actual evidence :μER = (dcr + 1) / 2</h3>
+
+    <h3><b>Certainty Interval:</b></h3>
+    <h3>φ (phi): φ = 1 - |dct|</h3>
+    
+    <h2><b><p style="color: blue;">Logical State Regions</p></b></h2>
+
+    <h3>LPA2v defines 12 regions in the unit square of annotation (QUPC), and your answer will be in one of those regions.</h3>
+    <center>
+<img src="Fig1.png" class="center" style="width:50%" align="middle">
+</center>
+    
+    <h3><b>Extreme States:</b></h3>
+    <h3>• t (true): High positive certainty</h3>
+    <h3>• f (false): High negative certainty</h3>
+    <h3>• ┬ (Inconsistent): High contradiction</h3>
+    <h3>• ┴ (Indeterminate): Low information</h3>
+
+    <h3><b>Transition States:</b></h3>
+   <h3>Q(t→T) → Quasi-true, tending to inconsistent</h3>
+<h3>Q(t→⊥) → Quasi-true, tending to paracomplete</h3>
+<h3>Q(F→T) → Quasi-false, tending to inconsistent</h3>
+<h3>Q(F→⊥) → Quasi-false, tending to paracomplete</h3>
+<h3>Q(T→t) → Quasi-inconsistent, tending to true</h3>
+<h3>Q(T→F) → Quasi-inconsistent, tending to false</h3>
+<h3>Q(⊥→t) → Quasi-paracomplete, tending to true</h3>
+<h3>Q(⊥→F) → Quasi-paracomplete, tending to false</h3>
+
+
+<h2><b><p style="color: blue;">User Guide</p></b></h2>
+
+    <h3><b>First of all, to create a block, write this:</b>  </h3>
+    <h3>from paraconsistent.blocks import ParaconsistentBlock
+</h3>
+    <h3># Create block with default values</h3>
+    <h3>block = ParaconsistentBlock()</h3>
+    
+    <h3><b>Configure the block parameters:</b>  </h3>
+    <h3>from paraconsistent.blocks import ParaconsistentBlock</h3>
+    <h3>block = ParaconsistentBlock()</h3>
+<h3># Configure certainty control limit (FtC)</h3>
+<h3>block.config.FtC = 0.70</h3>
+
+
+    <h3><b>Set Inputs(μ,λ ):</b></h3>
+    
+    <h3># Define levels of evidence</h3>
+    <h3>block.input.mu = 0.80 # Favorable evidence</h3>
+     <h3>block.input.lam = 0.20 # Unfavorable evidence</h3>
+
+    <h3><b>How to display the results:</b>  </h3>
+    <h3># Access individual results</h3>
+<h3>dc = block.complete.dc # Degree of Certainty</h3>
+<h3>dct = block.complete.dct # Degree of Contradiction</h3>
+<h3>muER = block.complete.muER # Real Evidence</h3>
+<h3>label = block.complete.label # Logical Region</h3>
+<h3># Or print all results</h3>
+<h3>block.print_complete()</h3>
+
+  <h3><b>How to Connect Multiple Blocks</b></h3>
+  <h3># Create a network of two blocks</h3>
+<h3>b1 = ParaconsistentBlock()</h3>
+<h3>b2 = ParaconsistentBlock()</h3>
+
+<h3># Configure block 1</h3>
+<h3>b1.config.FtC = 0.70</h3>
+<h3>b1.input.mu = 0.80</h3>
+<h3>b1.input.lam = 0.30</h3>
+
+<h3># Use the output of b1 as the input of b2</h3>
+<h3>b2.input.mu = b1.complete.muER</h3>
+<h3>b2.input.lam = 1 - b1.complete.phi</h3>
+
+<h3># Result propagated automatically</h3>
+<h3>print(f"Final state: {b2.complete.label}")</h3>
+
+    
+ 
+ <h2><b><p style="color: blue;">API Reference </p></b></h2>
+
+    <h3><b>Builder</b></h3>
+ <h3>ParaconsistentBlock(
+</h3>
+    <h3>    *,
+</h3>
+ <h3>mu: float | None = None,</h3>
+    <h3>lam: float | None = None,</h3>
+ <h3>**param_overrides</h3>
+    <h3>)</h3>
+
+
+ <h3>Parameters:
+</h3>
+    <h3>μ (mu): Favorable evidence degree(optional)</h3>
+ <h3>λ (lambda): Unfavorable evidence degree (optional)</h3>
+    <h3>**param_overrides: Configuration parameters (FtC)</h3>
+
+<h2><b><p>Configuration (config) </p></b></h2>
+
+    
+    <center>
+<table border="1">
+      
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Type</th>
+          <th>Range</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FtC</td>
+          <td>float</td>
+          <td>[0, 1]</td>
+          <td>0.50</td>
+          <td>Certainty Tolerance Factor (Certainty Control Limit)</td>
+        </tr>
+      </tbody>
+    </table>
+    </center>
+
+      <h3>The FtC input parameter modifies the shape of the QUPC by adjusting the geometry of the Lattice (green line).</h3>
+      <h3>As an example, we have two images: when FtC is 0.75, it reduces the areas of t and F while expanding the regions of T and Paracomplete; however, when FtC is 0.25, it increases the areas of t and F and decreases those of T and Paracomplete.</h3>
+      <p><h3>Example FtC = 0.75<h3></p>
+<center>
+      <img src="fi3.jpg" class="center" style="width:50%" align="middle">
+</center>
+<h3></h3>
+
+
+
+
+
+<p><h3>Example FtC = 0.25<h3></p>
+  <center>
+<img src="fig4.jpg" class="center" style="width:50%" align="middle">
+</center>
+ <h3>Note: The values VSSC, VICC, VSSCT, and VICCT are automatically calculated based on FtC.</h3>
+
+ <h2><b><p>Inputs </p></b></h2>
+ <h3># Method 1: Direct assignment</h3>
+<h3>block.input.mu = 0.80</h3>
+<h3>block.input.lam = 0.20</h3>
+
+<h3># Method 2: Functional approach</h3>
+<h3>block.input(mu=0.80, lam=0.20)</h3>
+
+    <h3>Values are automatically clamped in the range [0, 1].</h3>
+<h2><b><p>Outputs (Complete) </p></b></h2>
+    <center>
+    
+     <table border="1">
+      
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Range</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>mu</td><td>float</td><td>[0, 1]</td><td>Favorable level of evidence </td></tr>
+        <tr><td>lam</td><td>float</td><td>[0, 1]</td><td>Unfavorable level of evidence</td></tr>
+        <tr><td>dc</td><td>float</td><td>[-1, 1]</td><td>Degree of Certainty: μ - λ</td></tr>
+        <tr><td>dct</td><td>float</td><td>[-1, 1]</td><td>Degree of Contradiction: μ + λ - 1</td></tr>
+        <tr><td>d</td><td>float</td><td>[0, ∞)</td><td>Raw radial distance</td></tr>
+        <tr><td>D</td><td>float</td><td>[0, 1]</td><td>Normalized radial distance</td></tr>
+        <tr><td>dcr</td><td>float</td><td>[-1, 1]</td><td>Degree of Real Certainty: (1 - D) × sign(dc)</td></tr>
+        <tr><td>phi</td><td>float</td><td>[0, 1]</td><td>Certainty interval: 1 - |dct|</td></tr>
+        <tr><td>phiE</td><td>float</td><td>[0, 1]</td><td>Certainty interval (alias of phi)</td></tr>
+        <tr><td>muE</td><td>float</td><td>[0, 1]</td><td>Resulting evidence: (dc + 1) / 2</td></tr>
+        <tr><td>muECT</td><td>float</td><td>[0, 1]</td><td>Contradiction evidence: (dct + 1) / 2</td></tr>
+        <tr><td>muER</td><td>float</td><td>[0, 1]</td><td>Real evidence: (dcr + 1) / 2</td></tr>
+        <tr><td>decision_output</td><td>float</td><td>{0.0, 0.5, 1.0}</td><td>Binary decision output</td></tr>
+        <tr><td>label</td><td>str</td><td>-</td><td>Logical region label (t, f, ┬, ┴, etc.)</td></tr>
+        <tr><td>Regions</td><td>dict</td><td>-</td><td>Boolean flags per region</td></tr>
+        <tr><td>FtC</td><td>float</td><td>[0, 1]</td><td>Echo of parameters used in the calculation</td></tr>
+      </tbody>
+    </table>
+
+</center>
+    <h2><b><p>Methods </p></b></h2>
+    <h3># Export as a typed dictionary</h3>
+<h3>result: Complete = block.to_dict()</h3>
+
+<h3># Print formatted to the console</h3>
+<h3>block.print_complete()</h3>
+
+<h3># Set FtC parameter</h3>
+<h3>block.set_params(FtC=0.7)</h3>
+
+<h2><b><p style="color: blue;">Examples of a paraconsistent analysis network project using the library  </p></b></h2>
+<center>
+<img src="fig2.jpg" class="center" style="width:50%" align="middle">
+<p>Flowchart of the following example</p>
+</center>
+
+
+ <h3># Paraconsistent Library developed by Diego Oliveira da Cruz - EAILAB - IFSP</h3>
+<h3># Oriented by Dr. Arnaldo de Carvalho Junior - EAILAB-IFSP</h3>
+<h3># Date: 04/nov/2025</h3>
+
+<h3># Installing PAL2v Library</h3>
+<h3>%pip install pythonping paraconsistent</h3>
+
+<h3># Paraconsistent Analysis Network (PANnet)</h3>
+<h3># Created by: Dr. Arnaldo de Carvalho Junior</h3>
+<h3># Date: 04/11/2025</h3>
+<h3># Example application of the Paraconsistent-Lib Library</h3>
+
+<h3># Calls the Paraconsistent Library: from paraconsistent import ParaconsistentBlock</h3>
+<h3>import numpy as np</h3>
+
+<h3># 1) Create the blocks: NAP1 = ParaconsistentBlock()</h3>
+<h3>NAP2 = ParaconsistentBlock()</h3>
+<h3>NAP3 = ParaconsistentBlock()</h3>
+
+<h3># 2) Adjust the Certainty Factor parameter (affects the geometry of the 12 paraconsistent logical states)</h3>
+
+<h3># Reference value: 0.5</h3>
+<h3>NAP1.config.FtC = 0.5</h3>
+<h3>NAP2.config.FtC = 0.5</h3>
+<h3>NAP3.config.FtC = 0.5</h3>
+
+<h3># 3) Define the mu and lambda</h3>
+<h3>NAP1.input.mu = 0.45</h3>
+<h3>NAP1.input.lam = 0.76</h3>
+<h3>NAP2.input.mu = 1.00</h3>
+<h3>NAP2.input.lam = 0.40</h3>
+<h3>NAP3.input.mu = NAP1.complete.muER</h3>
+<h3>NAP3.input.lam = 1 - NAP2.complete.muER</h3>
+
+<h3># Output of the Paraconsistent Analysis Network</h3>
+<h3>print(f"Result of the PAL2v Analysis = {NAP3.complete.muER:.3f}")</h3>
+<h3>More examples: </h3>
+<h3><a href="https://colab.research.google.com/drive/14fwAmKHE_rHVK4Ec1izHyRVxeci7i_j5?usp=sharing#scrollTo=2xRO1FlLxeSf">PAL2v Library Test </a></h3>
+
+<h3><a href="https://colab.research.google.com/drive/15u0WXMpQR7vUNvLYlgBXlXZ5AlT2U4GQ?usp=sharing">PAL2v Paraextractor Example </a></h3>
+
+
+<h2><b><p style="color: blue;">Architecture  </p></b></h2>
+
+<h3>├── blocks/</h3>
+<h3>│  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   └── block.py — ParaconsistentBlock class</h3>
+<h3>├── core/</h3>
+<h3>│ ├── config.py — Configuration and validation</h3>
+<h3>│ ├── engine.py — Calculation engine</h3>
+<h3>│ ├── metrics.py — Geometric metrics</h3>
+<h3>│ ├── labels.py — Region classification</h3>
+<h3>│ └── types.py — Type definitions</h3>
+<h3>└── __init__.py</h3>
+
+<h2><b><p style="color: blue;">Calculation Flow  </p></b></h2>
+<ol>
+      
+
+<h3><li>Input: Validation and clamping of μ and λ</li></h3>
+<h3><li>Main Degrees: Calculation of dc and dct</li></h3>
+<h3><li>	Geometry: Calculation of d, D, and dcr</li></h3>
+	<h3><li>Evidence: Calculation of μE, μECT, μER, and φ</li></h3>
+	<h3><li>Decision: Comparison of μER with FtC</li></h3>
+  <h3><li>Classification: Identification of the logical region</li></h3>
+
+</ol>
+<h2><b><p>Cache and Performance</b></h2>
+
+
+ <h3>The system features an intelligent caching mechanism that automatically refreshes whenever inputs or parameters are modified, guaranteeing result consistency while maintaining optimal performance.</h3>
+    
+    <h2><b><p>Validation and Testing</b></h2>
+ <h3>The library was validated using standard test cases from the literature, achieving an accuracy rate above 97% across 37 independent evaluations.</h3>
+ 
+ <h2><b><p>License</b></h2>
+  
+    <h3><p>MIT License</p>
+<p>Copyright (c) 2025</p>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</h3>
+ 
+  
+
+
+  
+</font> <br />  
+ </div>
+</body>
+</html>
