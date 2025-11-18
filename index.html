@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Paraconsistent Library - Python Library for applying paraconsistent annotated evidential logic. Zero dependencies, type-safe, and performance optimized.">
-    <meta name="keywords" content="paraconsistent logic, python library, LPA2v, artificial intelligence, EAILAB, IFSP">
+    <meta name="keywords" content="paraconsistent logic, python library, PAL2v (Paraconsistent Annotated Logic with annotation of two values), artificial intelligence, EAILAB, IFSP">
     <meta name="author" content="Diego Oliveira da Cruz, Bruno Alves, Arnaldo Carvalho Junior - EAILAB IFSP">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Paraconsistent Library - Python LPA2v Implementation">
+    <meta property="og:title" content="Paraconsistent Library - Python PAL2v (Paraconsistent Annotated Logic with annotation of two values) Implementation">
     <meta property="og:description" content="Python Library designed to help users apply paraconsistent annotated evidential logic. Zero dependencies, type-safe implementation.">
     <meta property="og:image" content="logo1.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Paraconsistent Library - Python LPA2v Implementation">
+    <meta property="twitter:title" content="Paraconsistent Library - Python PAL2v (Paraconsistent Annotated Logic with annotation of two values) Implementation">
     <meta property="twitter:description" content="Python Library designed to help users apply paraconsistent annotated evidential logic.">
 
-    <title>Paraconsistent Library - Python LPA2v Implementation</title>
+    <title>Paraconsistent Library - Python PAL2v (Paraconsistent Annotated Logic with annotation of two values) Implementation</title>
 
     <!-- Prism.js for syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
@@ -548,7 +548,7 @@
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
         <div class="sidebar-header">
             <a href="#top" class="sidebar-title">Paraconsistent Library</a>
-            <div class="sidebar-subtitle">Python LPA2v Implementation</div>
+            <div class="sidebar-subtitle">Python PAL2v (Paraconsistent Annotated Logic with annotation of two values) Implementation</div>
         </div>
 
         <nav>
@@ -603,7 +603,7 @@
             <ul class="feature-list">
                 <li>Modular architecture based on connectable blocks</li>
                 <li>Zero external dependencies, it's necessary only the standard Python library.</li>
-                <li>Complete implementation of LPA2v with 12 logical state regions</li>
+                <li>Complete implementation of PAL2v (Paraconsistent Annotated Logic with annotation of two values) with 12 logical state regions</li>
                 <li>Automatic calculation of degrees of certainty, contradiction, and evidence</li>
                 <li>Type-safe with full support for Python type hints</li>
                 <li>Smart caching for performance optimization</li>
@@ -622,7 +622,7 @@
         <section class="section" id="theory">
             <h2>Theory of Logic</h2>
 
-            <p>LPA2v works with two degrees of evidence:</p>
+            <p>PAL2v (Paraconsistent Annotated Logic with annotation of two values) works with two degrees of evidence:</p>
             <ul>
                 <li><strong>μ (mu):</strong> Favorable evidence degree, μ ∈ [0, 1]</li>
                 <li><strong>λ (lambda):</strong> Unfavorable evidence degree, λ ∈ [0, 1]</li>
@@ -673,7 +673,7 @@
         <!-- Logical State Regions -->
         <section class="section">
             <h2>Logical State Regions</h2>
-            <p>LPA2v defines 12 regions in the unit square of annotation (QUPC), and your answer will be in one of those regions.</p>
+            <p>PAL2v defines 12 regions in the associated Lattice, and your answer will be in one of those regions.</p>
 
             <div class="img-container">
                 <img src="Fig1.png" alt="QUPC - Unit Square of Annotation showing 12 logical state regions" loading="lazy">
@@ -684,7 +684,7 @@
                 <li><strong>t (true):</strong> High positive certainty</li>
                 <li><strong>f (false):</strong> High negative certainty</li>
                 <li><strong>┬ (Inconsistent):</strong> High contradiction</li>
-                <li><strong>┴ (Indeterminate):</strong> Low information</li>
+                <li><strong>┴ (Paracomplete):</strong> High contradiction</li>
             </ul>
 
             <h3>Transition States:</h3>
@@ -864,7 +864,7 @@ block.set_params(FtC=0.7)</code></pre>
             <h2>Examples of a paraconsistent analysis network project using the library</h2>
 
             <div class="img-container">
-                <img src="fig2.jpg" alt="Flowchart diagram showing paraconsistent analysis network with NAP1, NAP2, and NAP3 blocks" loading="lazy">
+                <img src="fig2.jpg" alt="Flowchart diagram showing paraconsistent analysis network with  PAN-Paraconsistent Analysis Node1,  PAN-Paraconsistent Analysis Node2, and  PAN-Paraconsistent Analysis Node3 blocks" loading="lazy">
                 <p class="img-caption">Flowchart of the following example</p>
             </div>
 
@@ -884,26 +884,26 @@ block.set_params(FtC=0.7)</code></pre>
 from paraconsistent import ParaconsistentBlock
 
 # 1) Create the blocks
-NAP1 = ParaconsistentBlock()
-NAP2 = ParaconsistentBlock()
-NAP3 = ParaconsistentBlock()
+ PAN-Paraconsistent Analysis Node1 = ParaconsistentBlock()
+ PAN-Paraconsistent Analysis Node2 = ParaconsistentBlock()
+ PAN-Paraconsistent Analysis Node3 = ParaconsistentBlock()
 
 # 2) Adjust the Certainty Factor parameter (affects the geometry of the 12 paraconsistent logical states)
 # Reference value: 0.5
-NAP1.config.FtC = 0.5
-NAP2.config.FtC = 0.5
-NAP3.config.FtC = 0.5
+ PAN-Paraconsistent Analysis Node1.config.FtC = 0.5
+ PAN-Paraconsistent Analysis Node2.config.FtC = 0.5
+ PAN-Paraconsistent Analysis Node3.config.FtC = 0.5
 
 # 3) Define the mu and lambda
-NAP1.input.mu = 0.45
-NAP1.input.lam = 0.76
-NAP2.input.mu = 1.00
-NAP2.input.lam = 0.40
-NAP3.input.mu = NAP1.complete.muER
-NAP3.input.lam = 1 - NAP2.complete.muER
+ PAN-Paraconsistent Analysis Node1.input.mu = 0.45
+ PAN-Paraconsistent Analysis Node1.input.lam = 0.76
+ PAN-Paraconsistent Analysis Node2.input.mu = 1.00
+ PAN-Paraconsistent Analysis Node2.input.lam = 0.40
+ PAN-Paraconsistent Analysis Node3.input.mu =  PAN-Paraconsistent Analysis Node1.complete.muER
+ PAN-Paraconsistent Analysis Node3.input.lam = 1 -  PAN-Paraconsistent Analysis Node2.complete.muER
 
 # Output of the Paraconsistent Analysis Network
-print(f"Result of the PAL2v Analysis = {NAP3.complete.muER:.3f}")</code></pre>
+print(f"Result of the PAL2v Analysis = { PAN-Paraconsistent Analysis Node3.complete.muER:.3f}")</code></pre>
 
             <h3>More examples:</h3>
             <ul>
@@ -1073,5 +1073,6 @@ print(f"Result of the PAL2v Analysis = {NAP3.complete.muER:.3f}")</code></pre>
     </script>
 </body>
 </html>
+
 
 
