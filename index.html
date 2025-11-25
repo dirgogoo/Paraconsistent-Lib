@@ -864,7 +864,7 @@ block.set_params(FtC=0.7)</code></pre>
             <h2>Examples of a paraconsistent analysis network project using the library</h2>
 
             <div class="img-container">
-                <img src="fig2.jpg" alt="Flowchart diagram showing paraconsistent analysis network with  PAN-Paraconsistent Analysis Node1,  PAN-Paraconsistent Analysis Node2, and  PAN-Paraconsistent Analysis Node3 blocks" loading="lazy">
+                <img src="fig2.jpg" alt="Flowchart diagram showing paraconsistent analysis network with  PANNode1,  PANNode2, and  PANNode3 blocks" loading="lazy">
                 <p class="img-caption">Flowchart of the following example</p>
             </div>
 
@@ -900,7 +900,7 @@ from paraconsistent import ParaconsistentBlock
  PAN-Paraconsistent Analysis Node2.input.mu = 1.00
  PAN-Paraconsistent Analysis Node2.input.lam = 0.40
  PAN-Paraconsistent Analysis Node3.input.mu =  PAN-Paraconsistent Analysis Node1.complete.muER
- PAN-Paraconsistent Analysis Node3.input.lam = 1 -  PAN-Paraconsistent Analysis Node2.complete.muER
+ PAN-Paraconsistent Analysis Node3.input.lam = 1 -  PANNode2.complete.muER
 
 # Output of the Paraconsistent Analysis Network
 print(f"Result of the PAL2v Analysis = { PAN-Paraconsistent Analysis Node3.complete.muER:.3f}")</code></pre>
@@ -1073,6 +1073,7 @@ print(f"Result of the PAL2v Analysis = { PAN-Paraconsistent Analysis Node3.compl
     </script>
 </body>
 </html>
+
 
 
 
